@@ -1,0 +1,5 @@
+//./dsn.go
+*.yaml
+#二进制
+app/common/secret.go
+app/controller/test.go
