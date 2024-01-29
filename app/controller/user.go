@@ -95,3 +95,18 @@ func JoinGroup(c *gin.Context) {
 	}
 
 }
+
+func ExitGroup(c *gin.Context) {
+	var mes Message
+	c.BindJSON(&mes)
+	var group models.Group
+
+	usergroup := models.User_Group{
+		Group_id: mes.GroupId,
+		User_id:  mes.UserId,
+	}
+	//删除关系
+	common.DB.Delete(&usergroup)
+	//该群人数减1
+	common.DB.Table("Groups").Where("Id = ?", mes.GroupId).First(&group).Update("PeopleNum", group.PeopleNum-1)
+}

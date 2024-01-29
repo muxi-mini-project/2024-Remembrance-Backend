@@ -9,7 +9,7 @@ import (
 )
 
 func Newgorm() *gorm.DB {
-	db, err := gorm.Open(mysql.Open(common.Dsn), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(common.CONFIG.Dsn), &gorm.Config{})
 	if err != nil {
 		panic("连接数据库失败")
 	}

@@ -4,7 +4,6 @@ import (
 	"context"
 	"path"
 	"remembrance/app/common"
-	"remembrance/app/common/config"
 	"time"
 
 	"github.com/qiniu/go-sdk/v7/auth/qbox"
@@ -29,12 +28,12 @@ var Q Qiniu
 // 	}
 // }
 
-func Load(c config.Config) {
+func Load() {
 	Q = Qiniu{
-		AccessKey: common.AccessKey,
-		SecretKey: common.SecretKey,
-		Bucket:    common.Bucket,
-		Domain:    common.Domain,
+		AccessKey: common.CONFIG.Oss.AccessKey,
+		SecretKey: common.CONFIG.Oss.SecretKey,
+		Bucket:    common.CONFIG.Oss.Bucket,
+		Domain:    common.CONFIG.Oss.Domain,
 	}
 }
 
