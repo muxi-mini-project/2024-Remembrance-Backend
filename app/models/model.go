@@ -70,6 +70,7 @@ type Group struct {
 	gorm.Model
 	Name      string `jsom:"groupname"`
 	PeopleNum int    `json:"peoplenum" gorm:"default:1"`
+	Code      string `json:"groupid"`
 }
 
 // 用户与群

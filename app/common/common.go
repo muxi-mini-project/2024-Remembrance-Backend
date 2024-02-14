@@ -3,22 +3,30 @@ package common
 import (
 	"log"
 
+	"github.com/go-redis/redis"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 )
 
 var (
 	DB     *gorm.DB
+	RDB    *redis.Client
 	CONFIG Config
 )
 
 type Config struct {
 	Dsn string
+	Ema struct {
+		Qqsmtp    string
+		Qqport    string
+		From      string
+		Form_code string
+	}
 	Oss struct {
-		AccessKey  string
-		SecretKey  string
-		Bucket string
-		Domain string
+		AccessKey string
+		SecretKey string
+		Bucket    string
+		Domain    string
 	}
 }
 

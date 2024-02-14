@@ -4,11 +4,22 @@ import (
 	"remembrance/app/common"
 	"remembrance/app/models"
 
+	"github.com/go-redis/redis"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func Newgorm() *gorm.DB {
+func Newredis() *redis.Client {
+	// 连接到 Redis 服务器
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379", // Redis 服务器地址
+		Password: "",               // 密码（如果有）
+		DB:       0,                // 使用默认DB
+	})
+	return rdb
+}
+
+func Newmysql() *gorm.DB {
 	db, err := gorm.Open(mysql.Open(common.CONFIG.Dsn), &gorm.Config{})
 	if err != nil {
 		panic("连接数据库失败")

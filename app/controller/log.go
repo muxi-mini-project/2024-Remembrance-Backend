@@ -37,7 +37,9 @@ func Login(c *gin.Context) {
 
 }
 
+// 获取验证码
 func Get_code(c *gin.Context) {
+	//需要 用户邮箱 验证码用途（改密码，注册）
 	// 使用 ShouldBindJSON 解析请求中的 JSON 数据并将其绑定到 mes 结构体
 	if err := c.ShouldBindJSON(&mes); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -51,7 +53,7 @@ func Get_code(c *gin.Context) {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					// 没有找到匹配的记录
 					//向目标邮箱发送验证码
-					mes.Code = email.SendCode(mes.Email)
+					email.SendCode(mes.Email, mes.Type)
 					response.OkMsg(c, "验证码已发送")
 				} else {
 					// 其他查询错误
@@ -77,7 +79,7 @@ func Get_code(c *gin.Context) {
 			} else {
 				// 找到匹配的记录，可以使用 user 变量
 				//向目标邮箱发送验证码
-				mes.Code = email.SendCode(mes.Email)
+				email.SendCode(mes.Email, mes.Type)
 				response.OkMsg(c, "验证码已发送")
 			}
 
@@ -86,25 +88,19 @@ func Get_code(c *gin.Context) {
 
 }
 
+// 检查验证码
 func Check_Code(c *gin.Context) {
+	//需要 用户邮箱 验证码 验证码用途（改密码，注册）
 	var usermes email.Message
 	//获取邮箱验证码
 	if err := c.ShouldBindJSON(&usermes); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	if mes.Email == usermes.Email {
-		if mes.Code == usermes.Code {
-			//验证成功
-			//重置验证码
-			mes.Code = ""
-			//发送信息
-			response.OkMsg(c, "验证成功")
-		} else {
-			//向前端返回错误
-			response.FailMsg(c, "验证失败")
-		}
-	}
+	//检查验证码
+	status, st := usermes.CheckCode()
+	response.Message(c, status, st)
+
 }
 
 func Register(c *gin.Context) {

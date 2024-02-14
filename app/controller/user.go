@@ -1,13 +1,14 @@
 package controller
 
 import (
+	"fmt"
 	"remembrance/app/common"
-	"remembrance/app/common/codecheck"
 	"remembrance/app/models"
 	"remembrance/app/response"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis"
 )
 
 // 获取用户信息
@@ -15,6 +16,7 @@ func GetUserInfo(c *gin.Context) {
 	var user models.User
 	c.BindJSON(&user)
 	common.DB.Table("users").Where("ID = ?", user.ID).First(&user)
+	response.OkData(c, user)
 }
 
 // 更改密码
@@ -57,21 +59,16 @@ func CreateGroup(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
 	//检查验证码是否与已生效的重复
-
-	group := models.Group{
-		Name: mes.GroupName,
-	}
+	group := mes.GetGroup()
 	//创建群
 	common.DB.Create(&group)
 	//建立关系
 	CreatUser_Group(mes.UserId, group.ID, "creater")
 	//记录验证码
-	code := models.GroupCode{
-		Group_id:  group.ID,
-		Code:      mes.GroupCode,
-		TimeStamp: time.Now(),
+	err := common.RDB.Set("verification"+string(rune(group.ID)), group.Code, 10*time.Minute).Err()
+	if err != nil {
+		panic(err)
 	}
-	common.DB.Create(&code)
 	response.Ok(c)
 }
 
@@ -79,34 +76,44 @@ func CreateGroup(c *gin.Context) {
 func JoinGroup(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
-	code := models.GroupCode{
-		Code: mes.GroupCode,
-	}
-	//验证时间
-	if codecheck.IsCodeValid(code, "group") {
-		//找到群id
-		common.DB.Table("GroupCodes").Where("code = ?", code.Code).First(&code)
-		//var group models.Group
-		//common.DB.Table("Groups").Where("ID = ?", code.Group_id).First(&group)
-		CreatUser_Group(mes.UserId, code.Group_id, "member")
-		response.Ok(c)
+	group := mes.GetGroup()
+	//验证
+	val, err := common.RDB.Get("verification" + string(rune(group.ID))).Result()
+	if err == redis.Nil {
+		fmt.Println("验证码不存在或已过期")
+		response.FailMsg(c, "验证码不存在或已过期")
+	} else if err != nil {
+		panic(err)
+	} else if val == mes.GroupCode {
+		fmt.Println("验证码正确")
+		response.OkMsg(c, "验证码正确")
 	} else {
-		response.FailMsg(c, "群码已过期")
+		fmt.Println("验证码错误")
+		response.FailMsg(c, "验证码错误")
 	}
 
 }
 
-func ExitGroup(c *gin.Context) {
+func OutGroup(c *gin.Context) {
+	//主动退出则传退出者的userid
+	//被踢则传被踢的人的userid
 	var mes Message
 	c.BindJSON(&mes)
 	var group models.Group
 
-	usergroup := models.User_Group{
-		Group_id: mes.GroupId,
-		User_id:  mes.UserId,
-	}
+	usergroup := mes.GetUser_Group()
+	groupphoto := mes.GetGroupPhoto()
 	//删除关系
 	common.DB.Delete(&usergroup)
 	//该群人数减1
 	common.DB.Table("Groups").Where("Id = ?", mes.GroupId).First(&group).Update("PeopleNum", group.PeopleNum-1)
+	//判断是否保留
+	if mes.IfKeepGroupPhoto {
+		//保留
+		response.Ok(c)
+	} else {
+		//不保留,删掉
+		common.DB.Delete(&groupphoto)
+		response.Ok(c)
+	}
 }

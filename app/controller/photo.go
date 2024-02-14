@@ -18,6 +18,7 @@ func CreatePersonalAlbum(c *gin.Context) {
 	c.ShouldBindJSON(&album)
 	//album.Photo_num = 0
 	common.DB.Create(&album)
+	response.Ok(c)
 }
 
 // 发布在个人相册
@@ -28,11 +29,7 @@ func PostPersonalPhoto(c *gin.Context) {
 	var album models.PersonalAlbum
 	var user models.User
 	//获取图片信息
-	photo := models.PersonalPhoto{
-		User_id:  mes.UserId,
-		Cloudurl: mes.Cloudurl,
-		Text:     mes.Text,
-	}
+	photo := mes.GetPersonalPhoto()
 	//找到该用户的个人相册
 	common.DB.Table("PersonalAlbum").Where("User_id = ", mes.PersonalAlbumName).First(&album)
 	//印记数加一
@@ -44,6 +41,15 @@ func PostPersonalPhoto(c *gin.Context) {
 	Creat_album_photo(album.ID, photo.ID)
 	common.DB.Model(&album).First(&album, "id = ?", album.ID).Update("Photo_num", album.Photo_num+1)
 	response.Ok(c)
+}
+
+// 获取个人记忆
+func GetPersonalPhoto(c *gin.Context) {
+	var mes Message
+	c.BindJSON(&mes)
+	var photos []models.PersonalPhoto
+	common.DB.Limit(7).Table("personalphotos").Where("User_id = ?", mes.UserId).Find(&photos)
+	response.OkData(c, photos)
 }
 
 // 发布共同记忆
@@ -85,17 +91,28 @@ func PostGroupPhoto(c *gin.Context) {
 	user := mes.GetUser()
 	//印记数加一
 	common.DB.Model(&user).First(&user, "ID = ?", user.ID).Update("StampNum", user.StampNum+1).Update("PostNum", user.PostGroupNum+1)
+	response.Ok(c)
 }
 
-//获取多人记忆(websocket)
+// 获取多人记忆(websocket)
+func GetGroupPhoto(c *gin.Context) {
+	var mes Message
+	c.BindJSON(&mes)
+	var photos models.GroupPhoto
+	common.DB.Limit(7).Table("groupphotos").Where("Group_id = ?", mes.GroupId).Find(&photos)
+	response.OkData(c, photos)
+
+}
 
 // 获取共同记忆
 func GetCommonPhoto(c *gin.Context) {
 	var mes Message
+	c.BindJSON(&mes)
 	//查找图片
 	var photos []models.CommonPhoto
 	common.DB.Limit(7).Table("commonphotos").Where("location = ?", mes.Location).Find(&photos)
 	response.OkData(c, photos)
+
 }
 
 // 共同发布评论
@@ -120,34 +137,3 @@ func Get_token(c *gin.Context) {
 	token := tube.GetQNToken()
 	response.OkMsg(c, token)
 }
-
-// // 上传图像并返回url  （应由前端完成）
-// func Test(c *gin.Context) {
-// 	localFile := "C:\\Users\\L\\Documents\\Tencent Files\\2804366305\\FileRecv\\MobileFile\\IMG_20240122_202129.jpg"
-// 	url, err := tube.UploadFileToQiniu(localFile)
-// 	if err != nil {
-// 		panic(err)
-// 		//return
-// 	}
-// 	response.OkMsg(c, url)
-// }
-
-// // gorm.model 测试
-// func Test(c *gin.Context) {
-// 	type test struct {
-// 		gorm.Model
-// 		name string
-// 	}
-// 	a := test{
-// 		name: "45646",
-// 	}
-// 	common.DB.AutoMigrate(&test{})
-// 	fmt.Println(a)
-// 	response.OkData(c, a)
-// 	common.DB.Create(&a)
-// 	fmt.Println(a)
-// 	response.FailData(c, a)
-// 	common.DB.Table("tests").Where("name = ?", a.name).Find(&a)
-// 	fmt.Println(a)
-// 	response.OkData(c, a)
-// }

@@ -16,6 +16,7 @@ type Message struct {
 	Text              string `json:"text"`
 	GroupName         string `json:"groupname"`
 	GroupCode         string `json:"groupcode"`
+	IfKeepGroupPhoto  bool   `json:"ifkeepgroupphoto"`
 }
 
 func (mes Message) GetPersonalPhoto() models.PersonalPhoto {
@@ -43,3 +44,29 @@ func (mes Message) GetUser() models.User {
 	common.DB.First(&user)
 	return user
 }
+
+func (mes Message) GetGroup() models.Group {
+	group := models.Group{
+		Name: mes.GroupName,
+		Code: mes.GroupCode,
+	}
+	return group
+
+}
+
+func (mes Message) GetUser_Group() models.User_Group {
+	group_user := models.User_Group{
+		User_id:  mes.UserId,
+		Group_id: mes.GroupId,
+	}
+	return group_user
+}
+
+
+// func (mes Message)GetGroupCode() models.GroupCode{
+// 	code := models.GroupCode{
+// 		Group_id:  mes.GroupId,
+// 		Code:      mes.GroupCode,
+// 	}
+// 	return code
+// }
