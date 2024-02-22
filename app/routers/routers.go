@@ -15,7 +15,7 @@ func RouterInit() *gin.Engine {
 		LoginGroup.GET("/get_code", controller.Get_code)      //获取验证码
 		LoginGroup.POST("/check_code", controller.Check_Code) //检查验证码
 		LoginGroup.PUT("/register", controller.Register)      //注册
-		LoginGroup.POST("/login", controller.Login)           //登录
+		LoginGroup.POST("", controller.Login)                 //登录
 	}
 	//用户相关路由
 	UserGroup := a.Group("/api/user")
