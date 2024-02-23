@@ -62,7 +62,6 @@ func (mes Message) GetUser_Group() models.User_Group {
 	return group_user
 }
 
-
 // func (mes Message)GetGroupCode() models.GroupCode{
 // 	code := models.GroupCode{
 // 		Group_id:  mes.GroupId,

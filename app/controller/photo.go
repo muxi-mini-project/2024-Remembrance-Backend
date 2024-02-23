@@ -12,7 +12,18 @@ import (
 	"gorm.io/gorm"
 )
 
-// 创建个人相册
+// 创建个人相册 godoc
+//
+//	@Summary		创建个人相册
+//	@Description	获取 UserId AlbumName
+//	@Tags			controller
+//	@Accept			json
+//	@Produce		json
+//	@Param			userid				body		uint	true	"userid"
+//	@Param			personalalbumname	body		string	true	"personalalbumname"
+//	@Success		200					{object}	model.Account
+//	@Failure		400					{object}	httputil.HTTPError
+//	@Router			/api/photo/personal/createalbum [put]
 func CreatePersonalAlbum(c *gin.Context) {
 	var album models.PersonalAlbum
 	c.ShouldBindJSON(&album)
@@ -21,7 +32,19 @@ func CreatePersonalAlbum(c *gin.Context) {
 	response.Ok(c)
 }
 
-// 发布在个人相册
+// 发布在个人相册 godoc
+//
+//	@Summary		发布个人相册
+//	@Description	获取 UserId AlbumName
+//	@Tags			controller
+//	@Accept			json
+//	@Produce		json
+//	@Param	cloudurl body string true "cloudurl"
+//	@Param text body string true "text"
+//	@Param			userid				body		uint	true	"userid"
+//	@Success		200					{object}	model.Account
+//	@Failure		400					{object}	httputil.HTTPError
+//	@Router			/api/photo/personal/post [put]
 func PostPersonalPhoto(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)

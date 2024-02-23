@@ -1,0 +1,15 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "记忆 API",
+        "title": "Remembrance API",
+        "contact": {
+            "name": "lzd",
+            "email": "2804366305@qq.com"
+        },
+        "version": "1.0"
+    },
+    "host": "这里写服务的host",
+    "basePath": "api",
+    "paths": {}
+}

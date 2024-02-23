@@ -16,11 +16,6 @@ type Message struct {
 	Type  string `json:"gettype"` //请求类型 注册"register" 改密码"change"
 }
 
-//  common.CONFIG.Ema.Qqsmtp
-//  common.CONFIG.Ema.Qqport
-//  common.CONFIG.Ema.From      //发件人地址
-//  common.CONFIG.Ema.Form_code //授权码
-
 // 发送验证码
 func SendCode(to string, way string) {
 	//生成验证码
