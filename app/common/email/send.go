@@ -58,16 +58,16 @@ func SendCode(to string, way string) {
 func (mes Message) CheckCode() (int, string) {
 	val, err := common.RDB.Get("verification" + mes.Email + mes.Type).Result()
 	if err == redis.Nil {
-		fmt.Println("验证码不存在或已过期")
+		//fmt.Println("验证码不存在或已过期")
 		return 400, "验证码不存在或已过期"
 	} else if err != nil {
 		panic(err)
 		return 400, "错误"
 	} else if val == mes.Code {
-		fmt.Println("验证码正确")
+		//fmt.Println("验证码正确")
 		return 200, "验证码正确"
 	} else {
-		fmt.Println("验证码错误")
+		//fmt.Println("验证码错误")
 		return 400, "验证码错误"
 	}
 }

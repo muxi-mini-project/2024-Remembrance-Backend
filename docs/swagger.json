@@ -11,5 +11,332 @@
     },
     "host": "这里写服务的host",
     "basePath": "api",
-    "paths": {}
+    "paths": {
+        "/api/login": {
+            "post": {
+                "description": "获取email password 并检查是否正确",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "login"
+                ],
+                "summary": "登录",
+                "parameters": [
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    {
+                        "description": "password",
+                        "name": "password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Okres"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Failres"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login/check_code": {
+            "post": {
+                "description": "根据情况检查验证码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "login"
+                ],
+                "summary": "检查验证码",
+                "parameters": [
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/email.Message"
+                        }
+                    },
+                    {
+                        "description": "请求类型:注册'register',改密码'change'",
+                        "name": "gettype",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/email.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"message\":\"成功\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Okres"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"message\":\"Failure\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Failres"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login/get_code": {
+            "get": {
+                "description": "根据情况获取不同时限的验证码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "login"
+                ],
+                "summary": "获取验证码",
+                "parameters": [
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/email.Message"
+                        }
+                    },
+                    {
+                        "description": "请求类型:注册'register',改密码'change'",
+                        "name": "gettype",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/email.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"message\":\"获取成功\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Okres"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"message\":\"Failure\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Failres"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login/register": {
+            "put": {
+                "description": "注册",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/json"
+                ],
+                "tags": [
+                    "login"
+                ],
+                "summary": "注册",
+                "parameters": [
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    {
+                        "description": "password",
+                        "name": "password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Okres"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photo/personal/createalbum": {
+            "put": {
+                "description": "获取 UserId AlbumName",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "创建个人相册",
+                "parameters": [
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "personalalbumname",
+                        "name": "personalalbumname",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Okres"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Failres"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photo/personal/post": {
+            "put": {
+                "description": "获取 UserId AlbumName",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "发布个人相册",
+                "parameters": [
+                    {
+                        "description": "cloudurl",
+                        "name": "cloudurl",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "text",
+                        "name": "text",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Okres"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Failres"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "email.Message": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "验证码",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "gettype": {
+                    "description": "请求类型 注册\"register\" 改密码\"change\"",
+                    "type": "string"
+                }
+            }
+        },
+        "models.User": {
+            "type": "object"
+        },
+        "response.Failres": {
+            "type": "object"
+        },
+        "response.Okres": {
+            "type": "object"
+        }
+    }
 }

@@ -11,7 +11,16 @@ import (
 	"github.com/go-redis/redis"
 )
 
-// 获取用户信息
+// @Summary		获取用户信息
+// @Description	根据userid获取用户信息
+// @Tags			user
+// @Accept			application/json
+// @Produce		application/json
+// @Param			email		body		models.User			true	"email"
+// @Param			password	body		models.User			true	"password"
+// @Success		200			{object}	response.OkMesData		`{"message":"获取成功"}`
+// @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
+// @Router			/api/user/getinfo [get]
 func GetUserInfo(c *gin.Context) {
 	var user models.User
 	c.BindJSON(&user)
@@ -19,7 +28,16 @@ func GetUserInfo(c *gin.Context) {
 	response.OkData(c, user)
 }
 
-// 更改密码
+// @Summary		更改密码
+// @Description	保证前后两次邮箱相同，并将邮箱与更改后的密码上传
+// @Tags			user
+// @Accept			application/json
+// @Produce		application/json
+// @Param			email		body		models.User			true	"email"
+// @Param			password	body		models.User			true	"password"
+// @Success		200			{object}	response.OkMesData		`{"message":"获取成功"}`
+// @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
+// @Router			/api/user/changepassword [post]
 func ChangePassword(c *gin.Context) {
 	//获取信息
 	var user models.User
@@ -33,7 +51,7 @@ func ChangePassword(c *gin.Context) {
 	}
 	//查询原密码
 	var preuser models.User
-	common.DB.Table("users").First(&preuser, "Email = ?", mes.Email)
+	common.DB.Table("users").First(&preuser, "Email = ?", user.Email)
 	if user.Password == preuser.Password {
 		response.FailMsg(c, "更改后的密码不应与之前相同")
 		return
@@ -43,7 +61,16 @@ func ChangePassword(c *gin.Context) {
 	response.Ok(c)
 }
 
-// 更改昵称
+// @Summary		更改昵称
+// @Description	保证前后两次邮箱相同，并将邮箱与更改后的密码上传
+// @Tags			user
+// @Accept			application/json
+// @Produce		application/json
+// @Param			email		body		models.User			true	"email"
+// @Param			password	body		models.User			true	"password"
+// @Success		200			{object}	response.OkMesData		`{"message":"获取成功"}`
+// @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
+// @Router			/api/user/changepassword [post]
 func Changename(c *gin.Context) {
 	var user models.User
 	//获取信息

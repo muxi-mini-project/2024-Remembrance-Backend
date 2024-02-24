@@ -11,6 +11,24 @@ const (
 	FAIL    = 400
 )
 
+type OkMesData /*[T LoginResp | RegisterResp] */ struct {
+	code    int
+	message string
+	data    any
+}
+
+// type OkMes struct {
+// 	code    int
+// 	message string
+// 	data    any
+// }
+
+type FailMesData struct {
+	code    int
+	message string
+	data    any
+}
+
 // 自定义通用消息
 func Message(ctx *gin.Context, status int, message string, data ...any) {
 	var obj gin.H
