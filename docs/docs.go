@@ -18,58 +18,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/login": {
+        "/api/check_code": {
             "post": {
-                "description": "获取email password 并检查是否正确",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "login"
-                ],
-                "summary": "登录",
-                "parameters": [
-                    {
-                        "description": "email",
-                        "name": "email",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.User"
-                        }
-                    },
-                    {
-                        "description": "password",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Okres"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.Failres"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/login/check_code": {
-            "post": {
-                "description": "根据情况检查验证码",
+                "description": "根据情况检查验证码 会返回 \"验证码不存在或已过期\"/\"验证码正确\"/\"验证码错误\"",
                 "consumes": [
                     "application/json"
                 ],
@@ -91,6 +42,15 @@ const docTemplate = `{
                         }
                     },
                     {
+                        "description": "code",
+                        "name": "code",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/email.Message"
+                        }
+                    },
+                    {
                         "description": "请求类型:注册'register',改密码'change'",
                         "name": "gettype",
                         "in": "body",
@@ -104,19 +64,19 @@ const docTemplate = `{
                     "200": {
                         "description": "{\"message\":\"成功\"}",
                         "schema": {
-                            "$ref": "#/definitions/response.Okres"
+                            "$ref": "#/definitions/response.OkMesData"
                         }
                     },
                     "400": {
                         "description": "{\"message\":\"Failure\"}",
                         "schema": {
-                            "$ref": "#/definitions/response.Failres"
+                            "$ref": "#/definitions/response.FailMesData"
                         }
                     }
                 }
             }
         },
-        "/api/login/get_code": {
+        "/api/get_code": {
             "get": {
                 "description": "根据情况获取不同时限的验证码",
                 "consumes": [
@@ -153,32 +113,31 @@ const docTemplate = `{
                     "200": {
                         "description": "{\"message\":\"获取成功\"}",
                         "schema": {
-                            "$ref": "#/definitions/response.Okres"
+                            "$ref": "#/definitions/response.OkMesData"
                         }
                     },
                     "400": {
                         "description": "{\"message\":\"Failure\"}",
                         "schema": {
-                            "$ref": "#/definitions/response.Failres"
+                            "$ref": "#/definitions/response.FailMesData"
                         }
                     }
                 }
             }
         },
-        "/api/login/register": {
-            "put": {
-                "description": "注册",
+        "/api/login": {
+            "post": {
+                "description": "获取email password 并检查是否正确 登录后会将 userid 传回前端",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
-                    "application/json",
                     "application/json"
                 ],
                 "tags": [
                     "login"
                 ],
-                "summary": "注册",
+                "summary": "登录",
                 "parameters": [
                     {
                         "description": "email",
@@ -203,7 +162,283 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.Okres"
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photo/common/comment/get": {
+            "get": {
+                "description": "需要 photoid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "获取共同评论",
+                "parameters": [
+                    {
+                        "description": "photoid",
+                        "name": "photoid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photo/common/comment/post": {
+            "put": {
+                "description": "需要 UserId photoid text",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "发布共同评论",
+                "parameters": [
+                    {
+                        "description": "photoid",
+                        "name": "photoid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "text",
+                        "name": "text",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "groupid",
+                        "name": "groupid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photo/common/photo/post": {
+            "put": {
+                "description": "需要 UserId 图片url text location",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "发布共同记忆",
+                "parameters": [
+                    {
+                        "description": "cloudurl",
+                        "name": "cloudurl",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "text",
+                        "name": "text",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "location",
+                        "name": "location",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photo/gettoken": {
+            "get": {
+                "description": "发送请求即可",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "获取token",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photo/group/post": {
+            "put": {
+                "description": "需要 UserId groupid 图片url text",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "发布多人记忆",
+                "parameters": [
+                    {
+                        "description": "cloudurl",
+                        "name": "cloudurl",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "text",
+                        "name": "text",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "description": "groupid",
+                        "name": "groupid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
                         }
                     }
                 }
@@ -246,13 +481,53 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.Okres"
+                            "$ref": "#/definitions/response.OkMesData"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.Failres"
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photo/personal/get": {
+            "get": {
+                "description": "需要 UserId",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "获取个人记忆",
+                "parameters": [
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
                         }
                     }
                 }
@@ -260,7 +535,7 @@ const docTemplate = `{
         },
         "/api/photo/personal/post": {
             "put": {
-                "description": "获取 UserId AlbumName",
+                "description": "需要 UserId 图片url text",
                 "consumes": [
                     "application/json"
                 ],
@@ -304,13 +579,384 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.Okres"
+                            "$ref": "#/definitions/response.OkMesData"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.Failres"
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "put": {
+                "description": "注册",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/json"
+                ],
+                "tags": [
+                    "login"
+                ],
+                "summary": "注册",
+                "parameters": [
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    {
+                        "description": "password",
+                        "name": "password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"message\":\"Failure\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/changename": {
+            "post": {
+                "description": "保证前后两次邮箱相同，并将邮箱与更改后的密码上传",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "更改昵称",
+                "parameters": [
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    {
+                        "description": "name",
+                        "name": "name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/changepassword": {
+            "post": {
+                "description": "保证前后两次邮箱相同，并将邮箱与更改后的密码上传",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "更改密码",
+                "parameters": [
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    {
+                        "description": "password",
+                        "name": "password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/getinfo": {
+            "get": {
+                "description": "根据userid获取用户信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "获取用户信息",
+                "parameters": [
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    {
+                        "description": "password",
+                        "name": "password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/group/creat": {
+            "put": {
+                "description": "需要创建者的id 群名 code （目前群名不能重复）",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "创建群",
+                "parameters": [
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Group"
+                        }
+                    },
+                    {
+                        "description": "name",
+                        "name": "name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Group"
+                        }
+                    },
+                    {
+                        "description": "code",
+                        "name": "code",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Group"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/group/join": {
+            "post": {
+                "description": "需要加入者的id 加入的群名 对应的code",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "加入群",
+                "parameters": [
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Group"
+                        }
+                    },
+                    {
+                        "description": "name",
+                        "name": "name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Group"
+                        }
+                    },
+                    {
+                        "description": "code",
+                        "name": "code",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Group"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/group/out": {
+            "post": {
+                "description": "主动退出则传退出者的userid，被踢则传被踢的人的userid 还需要群名",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "退出群",
+                "parameters": [
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Group"
+                        }
+                    },
+                    {
+                        "description": "name",
+                        "name": "name",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Group"
+                        }
+                    },
+                    {
+                        "description": "code",
+                        "name": "code",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Group"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
                         }
                     }
                 }
@@ -335,13 +981,16 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Group": {
+            "type": "object"
+        },
         "models.User": {
             "type": "object"
         },
-        "response.Failres": {
+        "response.FailMesData": {
             "type": "object"
         },
-        "response.Okres": {
+        "response.OkMesData": {
             "type": "object"
         }
     }

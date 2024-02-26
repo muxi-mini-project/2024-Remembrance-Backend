@@ -44,8 +44,8 @@ func RouterInit() *gin.Engine {
 		PhotoPost.GET("/common/photo/get", controller.GetCommonPhoto)          //获取共同记忆
 		PhotoPost.PUT("/common/comment/post", controller.PostComment)          //发布共同评论
 		PhotoPost.GET("/common/comment/get", controller.GetCommonComment)      //获取共同评论
-		PhotoPost.POST("/group/post", controller.PostGroupPhoto)               //发布多人记忆
-		PhotoPost.GET("/group/get", controller.GetGroupPhoto)                  //获取多人记忆
+		PhotoPost.PUT("/group/post", controller.PostGroupPhoto)                //发布多人记忆
+		//PhotoPost.GET("/group/get", controller.GetGroupPhoto)                  //获取多人记忆
 	}
 
 	// //用于测试的路由

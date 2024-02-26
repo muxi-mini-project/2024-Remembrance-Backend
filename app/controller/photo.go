@@ -12,16 +12,16 @@ import (
 	"gorm.io/gorm"
 )
 
-// @Summary		创建个人相册
-// @Description	获取 UserId AlbumName
-// @Tags			controller
-// @Accept			json
-// @Produce		json
-// @Param			userid				body		uint	true	"userid"
-// @Param			personalalbumname	body		string	true	"personalalbumname"
-// @Success		200					{object}	response.Okres
-// @Failure		400					{object}	response.Failres
-// @Router			/api/photo/personal/createalbum [put]
+//	@Summary		创建个人相册
+//	@Description	获取 UserId AlbumName
+//	@Tags			controller
+//	@Accept			json
+//	@Produce		json
+//	@Param			userid				body		uint					true	"userid"
+//	@Param			personalalbumname	body		string					true	"personalalbumname"
+//	@Success		200					{object}	response.OkMesData		`{"message":"成功"}`
+//	@Failure		400					{object}	response.FailMesData	`{"message":"Failure"}`
+//	@Router			/api/photo/personal/createalbum [put]
 func CreatePersonalAlbum(c *gin.Context) {
 	var album models.PersonalAlbum
 	c.ShouldBindJSON(&album)
@@ -30,17 +30,17 @@ func CreatePersonalAlbum(c *gin.Context) {
 	response.Ok(c)
 }
 
-// @Summary		发布个人相册
-// @Description	获取 UserId AlbumName
-// @Tags			controller
-// @Accept			json
-// @Produce		json
-// @Param			cloudurl	body		string	true	"cloudurl"
-// @Param			text		body		string	true	"text"
-// @Param			userid		body		uint	true	"userid"
-// @Success		200			{object}	response.Okres
-// @Failure		400			{object}	response.Failres
-// @Router			/api/photo/personal/post [put]
+//	@Summary		发布个人相册
+//	@Description	需要 UserId 图片url text
+//	@Tags			controller
+//	@Accept			json
+//	@Produce		json
+//	@Param			cloudurl	body		string					true	"cloudurl"
+//	@Param			text		body		string					true	"text"
+//	@Param			userid		body		uint					true	"userid"
+//	@Success		200			{object}	response.OkMesData		`{"message":"成功"}`
+//	@Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
+//	@Router			/api/photo/personal/post [put]
 func PostPersonalPhoto(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
@@ -62,7 +62,15 @@ func PostPersonalPhoto(c *gin.Context) {
 	response.Ok(c)
 }
 
-// 获取个人记忆
+//	@Summary		获取个人记忆
+//	@Description	需要 UserId
+//	@Tags			controller
+//	@Accept			json
+//	@Produce		json
+//	@Param			userid	body		uint					true	"userid"
+//	@Success		200		{object}	response.OkMesData		`{"message":"获取成功"}`
+//	@Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
+//	@Router			/api/photo/personal/get [get]
 func GetPersonalPhoto(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
@@ -71,7 +79,18 @@ func GetPersonalPhoto(c *gin.Context) {
 	response.OkData(c, photos)
 }
 
-// 发布共同记忆
+//	@Summary		发布共同记忆
+//	@Description	需要 UserId 图片url text location
+//	@Tags			controller
+//	@Accept			json
+//	@Produce		json
+//	@Param			cloudurl	body		string					true	"cloudurl"
+//	@Param			text		body		string					true	"text"
+//	@Param			userid		body		uint					true	"userid"
+//	@Param			location	body		string					true	"location"
+//	@Success		200			{object}	response.OkMesData		`{"message":"成功"}`
+//	@Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
+//	@Router			/api/photo/common/photo/post [put]
 func PostCommonPhoto(c *gin.Context) {
 	//var mes message
 	var photo models.CommonPhoto
@@ -97,12 +116,22 @@ func PostCommonPhoto(c *gin.Context) {
 	}
 }
 
-// 发布多人记忆
+//	@Summary		发布多人记忆
+//	@Description	需要 UserId groupid 图片url text
+//	@Tags			controller
+//	@Accept			json
+//	@Produce		json
+//	@Param			cloudurl	body		string					true	"cloudurl"
+//	@Param			text		body		string					true	"text"
+//	@Param			userid		body		uint					true	"userid"
+//	@Param			groupid		body		uint					true	"groupid"
+//	@Success		200			{object}	response.OkMesData		`{"message":"成功"}`
+//	@Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
+//	@Router			/api/photo/group/post [put]
 func PostGroupPhoto(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
-	//获取指定信息
-	// //获取图片信息
+	//获取图片信息
 	photo := mes.GetGroupPhoto()
 	//入库
 	common.DB.Create(&photo)
@@ -114,16 +143,24 @@ func PostGroupPhoto(c *gin.Context) {
 }
 
 // 获取多人记忆(websocket)
-func GetGroupPhoto(c *gin.Context) {
-	var mes Message
-	c.BindJSON(&mes)
-	var photos models.GroupPhoto
-	common.DB.Limit(7).Table("groupphotos").Where("Group_id = ?", mes.GroupId).Find(&photos)
-	response.OkData(c, photos)
+// func GetGroupPhoto(c *gin.Context) {
+// 	var mes Message
+// 	c.BindJSON(&mes)
+// 	var photos models.GroupPhoto
+// 	common.DB.Limit(7).Table("groupphotos").Where("Group_id = ?", mes.GroupId).Find(&photos)
+// 	response.OkData(c, photos)
 
-}
+// }
 
-// 获取共同记忆
+//	@Summary		获取共同记忆
+//	@Description	需要 location 传回的信息中包含url photoid text
+//	@Tags			controller
+//	@Accept			json
+//	@Produce		json
+//	@Param			location	body		string					true	"location"
+//	@Success		200			{object}	response.OkMesData		`{"message":"获取成功"}`
+//	@Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
+//	@Router			/api/photo/common/comment/get [get]
 func GetCommonPhoto(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
@@ -134,7 +171,18 @@ func GetCommonPhoto(c *gin.Context) {
 
 }
 
-// 共同发布评论
+//	@Summary		发布共同评论
+//	@Description	需要 UserId photoid text
+//	@Tags			controller
+//	@Accept			json
+//	@Produce		json
+//	@Param			photoid	body		uint					true	"photoid"
+//	@Param			text	body		string					true	"text"
+//	@Param			userid	body		uint					true	"userid"
+//	@Param			groupid	body		uint					true	"groupid"
+//	@Success		200		{object}	response.OkMesData		`{"message":"成功"}`
+//	@Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
+//	@Router			/api/photo/common/comment/post [put]
 func PostComment(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
@@ -142,7 +190,15 @@ func PostComment(c *gin.Context) {
 	response.Ok(c)
 }
 
-// 获取共同评论
+//	@Summary		获取共同评论
+//	@Description	需要 photoid
+//	@Tags			controller
+//	@Accept			json
+//	@Produce		json
+//	@Param			photoid	body		string					true	"photoid"
+//	@Success		200		{object}	response.OkMesData		`{"message":"获取成功"}`
+//	@Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
+//	@Router			/api/photo/common/comment/get [get]
 func GetCommonComment(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
@@ -151,7 +207,14 @@ func GetCommonComment(c *gin.Context) {
 	response.OkData(c, comments)
 }
 
-// 传输token
+//	@Summary		获取token
+//	@Description	发送请求即可
+//	@Tags			controller
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	response.OkMesData		`{"message":"获取成功"}`
+//	@Failure		400	{object}	response.FailMesData	`{"message":"Failure"}`
+//	@Router			/api/photo/gettoken [get]
 func Get_token(c *gin.Context) {
 	token := tube.GetQNToken()
 	response.OkMsg(c, token)
