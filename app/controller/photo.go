@@ -1,3 +1,26 @@
+
+// 创建个人相册
+// @Summary 创建个人相册
+// @Description 用户创建一个个人相册
+// @Tags 相册管理
+// @Accept json
+// @Produce json
+// @Param album body models.PersonalAlbum true "相册信息"
+// @Success 200 {object} response.Ok "创建成功"
+// @Failure 400 {object} response.ErrorMsg "创建失败"
+// @Router /album/personal [post]
+
+// 发布在个人相册
+// @Summary 发布照片到个人相册
+// @Description 用户向个人相册中添加照片
+// @Tags 相册管理
+// @Accept json
+// @Produce json
+// @Param album_id body int true "相册ID"
+// @Param photo body string true "照片URL"
+// @Success 200 {object} response.Ok "发布成功"
+// @Failure 400 {object} response.ErrorMsg "发布失败"
+// @Router /photo/personal [post]
 package controller
 
 import (
