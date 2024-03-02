@@ -1,14 +1,14 @@
 
-// @Summary 用户登录
-// @Description 用户通过邮箱和密码登录
-// @Tags 用户认证
-// @Accept json
-// @Produce json
-// @Param email body string true "用户邮箱"
-// @Param password body string true "用户密码"
-// @Success 200 {object} response.OkMsg "登录成功"
-// @Failure 400 {object} response.ErrorMsg "登录失败"
-// @Router /login [post]
+//	@Summary		用户登录
+//	@Description	用户通过邮箱和密码登录
+//	@Tags			用户认证
+//	@Accept			json
+//	@Produce		json
+//	@Param			email		body		string				true	"用户邮箱"
+//	@Param			password	body		string				true	"用户密码"
+//	@Success		200			{object}	response.OkMsg		"登录成功"
+//	@Failure		400			{object}	response.ErrorMsg	"登录失败"
+//	@Router			/login [post]
 package controller
 
 import (

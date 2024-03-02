@@ -1,27 +1,27 @@
 
 // 获取用户信息
-// @Summary 获取用户信息
-// @Description 根据用户ID获取用户详细信息
-// @Tags 用户管理
-// @Accept json
-// @Produce json
-// @Param id path int true "用户ID"
-// @Success 200 {object} models.User "请求成功"
-// @Failure 400 {object} response.ErrorMsg "请求失败"
-// @Router /user/{id} [get]
+//	@Summary		获取用户信息
+//	@Description	根据用户ID获取用户详细信息
+//	@Tags			用户管理
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int					true	"用户ID"
+//	@Success		200	{object}	models.User			"请求成功"
+//	@Failure		400	{object}	response.ErrorMsg	"请求失败"
+//	@Router			/user/{id} [get]
 
 // 更改密码
-// @Summary 更改密码
-// @Description 用户更改自己的密码
-// @Tags 用户管理
-// @Accept json
-// @Produce json
-// @Param id body int true "用户ID"
-// @Param old_password body string true "旧密码"
-// @Param new_password body string true "新密码"
-// @Success 200 {object} response.OkMsg "密码更改成功"
-// @Failure 400 {object} response.ErrorMsg "密码更改失败"
-// @Router /user/password [post]
+//	@Summary		更改密码
+//	@Description	用户更改自己的密码
+//	@Tags			用户管理
+//	@Accept			json
+//	@Produce		json
+//	@Param			id				body		int					true	"用户ID"
+//	@Param			old_password	body		string				true	"旧密码"
+//	@Param			new_password	body		string				true	"新密码"
+//	@Success		200				{object}	response.OkMsg		"密码更改成功"
+//	@Failure		400				{object}	response.ErrorMsg	"密码更改失败"
+//	@Router			/user/password [post]
 package controller
 
 import (
