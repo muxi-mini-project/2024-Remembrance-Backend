@@ -999,7 +999,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "这里写服务的host",
+	Host:             "iZ7xv3lwg2nwcjz6e2kxipZ",
 	BasePath:         "api",
 	Schemes:          []string{},
 	Title:            "Remembrance API",

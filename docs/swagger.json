@@ -9,7 +9,7 @@
         },
         "version": "1.0"
     },
-    "host": "这里写服务的host",
+    "host": "iZ7xv3lwg2nwcjz6e2kxipZ",
     "basePath": "api",
     "paths": {
         "/api/check_code": {
