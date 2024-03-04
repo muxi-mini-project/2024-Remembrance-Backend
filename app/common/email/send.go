@@ -27,13 +27,13 @@ func SendCode(to string, way string) {
 	// 邮件内容
 	message := "Subject: " + subject + "\r\n" +
 		"To: " + to + "\r\n" +
-		"From: " + common.CONFIG.Ema.From + "\r\n" +
+		"From: " + common.CONFIG.Email.From + "\r\n" +
 		"\r\n" +
 		body
 
 		// 使用 SMTP 连接到 QQ 邮箱服务器
-	auth := smtp.PlainAuth("", common.CONFIG.Ema.From, common.CONFIG.Ema.Form_code, common.CONFIG.Ema.Qqsmtp)
-	err := smtp.SendMail(common.CONFIG.Ema.Qqsmtp+":"+common.CONFIG.Ema.Qqport, auth, common.CONFIG.Ema.From, []string{to}, []byte(message))
+	auth := smtp.PlainAuth("", common.CONFIG.Email.From, common.CONFIG.Email.From_code, common.CONFIG.Email.Qqsmtp)
+	err := smtp.SendMail(common.CONFIG.Email.Qqsmtp+":"+common.CONFIG.Email.Qqport, auth, common.CONFIG.Email.From, []string{to}, []byte(message))
 	if err != nil {
 		// 处理发送邮件时的错误
 		panic(err)

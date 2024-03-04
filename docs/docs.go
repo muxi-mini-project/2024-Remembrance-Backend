@@ -692,7 +692,7 @@ const docTemplate = `{
         },
         "/api/user/changepassword": {
             "post": {
-                "description": "保证前后两次邮箱相同，并将邮箱与更改后的密码上传",
+                "description": "前端需保证前后两次邮箱相同，并将邮箱与更改后的密码上传",
                 "consumes": [
                     "application/json"
                 ],

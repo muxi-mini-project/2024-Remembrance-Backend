@@ -16,11 +16,11 @@ var (
 
 type Config struct {
 	Dsn string
-	Ema struct {
+	Email struct {
 		Qqsmtp    string
 		Qqport    string
 		From      string
-		Form_code string
+		From_code string
 	}
 	Oss struct {
 		AccessKey string
