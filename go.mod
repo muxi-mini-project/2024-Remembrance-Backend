@@ -8,7 +8,7 @@ require (
 	github.com/qiniu/go-sdk/v7 v7.19.0
 	github.com/swaggo/swag v1.16.3
 	gorm.io/driver/mysql v1.5.2
-	gorm.io/gorm v1.25.2-0.20230530020048-26663ab9bf55
+	gorm.io/gorm v1.25.7
 )
 
 require (

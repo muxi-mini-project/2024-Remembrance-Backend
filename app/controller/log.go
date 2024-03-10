@@ -15,12 +15,12 @@ import (
 //var mes email.Message
 
 // @Summary		登录
-// @Description	获取email password 并检查是否正确 登录后会将 userid 传回前端
+// @Description	获取email password 并检查是否匹配， 匹配成功后会将成功消息与 userid 传回前端 userid 在之后会用到
 // @Tags			login
 // @Accept			application/json
 // @Produce		application/json
-// @Param			email		body		models.User				true	"email"
-// @Param			password	body		models.User				true	"password"
+// @Param			email		body		models.S_User				false	"email"
+// @Param			password	body		models.S_User				false	"password"
 // @Success		200			{object}	response.OkMesData		`{"message":"登录成功"}`
 // @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
 // @Router			/api/login [post]
@@ -47,7 +47,7 @@ func Login(c *gin.Context) {
 
 	if user.Password == loguser.Password {
 		//密码正确
-		response.OkMsgData(c, user.Email, user.ID)
+		response.OkData(c, user.ID)
 	} else {
 		//密码错误
 		response.Fail(c)
@@ -56,12 +56,12 @@ func Login(c *gin.Context) {
 }
 
 // @Summary		获取验证码
-// @Description	根据情况获取不同时限的验证码
+// @Description	根据情况向指定邮箱发送不同时限的验证码，
 // @Tags			login
 // @Accept			application/json
 // @Produce		application/json
-// @Param			email	body		email.Message			true	"email"
-// @Param			gettype	body		email.Message			true	"请求类型:注册'register',改密码'change'"
+// @Param			email	body		email.Message			false	"email"
+// @Param			gettype	body		email.Message			false	"请求类型:注册'register',改密码'change'"
 // @Success		200		{object}	response.OkMesData		"{"message":"获取成功"}"
 // @Failure		400		{object}	response.FailMesData	"{"message":"Failure"}"
 // @Router			/api/get_code [get]
@@ -123,7 +123,7 @@ func Get_code(c *gin.Context) {
 }
 
 // @Summary		检查验证码
-// @Description	根据情况检查验证码 会返回 "验证码不存在或已过期"/"验证码正确"/"验证码错误"
+// @Description	根据发送的 邮箱 请求方式（register，change）检查 验证码， 会返回 "验证码不存在或已过期"/"验证码正确"/"验证码错误"
 // @Tags			login
 // @Accept			application/json
 // @Produce		application/json
@@ -148,13 +148,13 @@ func Check_Code(c *gin.Context) {
 }
 
 // @Summary		注册
-// @Description	注册
+// @Description	前端检查验证码正确之后，再将 email 与 password 传给后端
 // @Produce		json
 // @Tags			login
 // @Accept			application/json
 // @Produce		application/json
-// @Param			email		body		models.User				true	"email"
-// @Param			password	body		models.User				true	"password"
+// @Param			email		body		models.S_User				true	"email"
+// @Param			password	body		models.S_User				true	"password"
 // @Success		200			{object}	response.OkMesData		`{"message":"注册成功"}`
 // @Failure		400			{object}	response.FailMesData	"{"message":"Failure"}"
 // @Router			/api/register [put]

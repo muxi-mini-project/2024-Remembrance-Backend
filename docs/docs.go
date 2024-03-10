@@ -20,7 +20,7 @@ const docTemplate = `{
     "paths": {
         "/api/check_code": {
             "post": {
-                "description": "根据情况检查验证码 会返回 \"验证码不存在或已过期\"/\"验证码正确\"/\"验证码错误\"",
+                "description": "根据发送的 邮箱 请求方式（register，change）检查 验证码， 会返回 \"验证码不存在或已过期\"/\"验证码正确\"/\"验证码错误\"",
                 "consumes": [
                     "application/json"
                 ],
@@ -78,7 +78,7 @@ const docTemplate = `{
         },
         "/api/get_code": {
             "get": {
-                "description": "根据情况获取不同时限的验证码",
+                "description": "根据情况向指定邮箱发送不同时限的验证码，",
                 "consumes": [
                     "application/json"
                 ],
@@ -94,7 +94,6 @@ const docTemplate = `{
                         "description": "email",
                         "name": "email",
                         "in": "body",
-                        "required": true,
                         "schema": {
                             "$ref": "#/definitions/email.Message"
                         }
@@ -103,7 +102,6 @@ const docTemplate = `{
                         "description": "请求类型:注册'register',改密码'change'",
                         "name": "gettype",
                         "in": "body",
-                        "required": true,
                         "schema": {
                             "$ref": "#/definitions/email.Message"
                         }
@@ -127,7 +125,7 @@ const docTemplate = `{
         },
         "/api/login": {
             "post": {
-                "description": "获取email password 并检查是否正确 登录后会将 userid 传回前端",
+                "description": "获取email password 并检查是否匹配， 匹配成功后会将成功消息与 userid 传回前端 userid 在之后会用到",
                 "consumes": [
                     "application/json"
                 ],
@@ -143,18 +141,16 @@ const docTemplate = `{
                         "description": "email",
                         "name": "email",
                         "in": "body",
-                        "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.S_User"
                         }
                     },
                     {
                         "description": "password",
                         "name": "password",
                         "in": "body",
-                        "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.S_User"
                         }
                     }
                 ],
@@ -191,6 +187,46 @@ const docTemplate = `{
                     {
                         "description": "photoid",
                         "name": "photoid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photo/common/comment/getsearch": {
+            "get": {
+                "description": "需要 userid 返回5条搜素历史",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "获取搜素历史",
+                "parameters": [
+                    {
+                        "description": "location",
+                        "name": "location",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -234,7 +270,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     },
                     {
@@ -243,7 +279,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     },
                     {
@@ -252,7 +288,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     },
                     {
@@ -261,7 +297,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     }
                 ],
@@ -301,7 +337,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     },
                     {
@@ -310,7 +346,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     },
                     {
@@ -319,7 +355,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     },
                     {
@@ -328,7 +364,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     }
                 ],
@@ -397,7 +433,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     },
                     {
@@ -406,7 +442,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     },
                     {
@@ -415,7 +451,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     },
                     {
@@ -424,7 +460,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     }
                 ],
@@ -446,7 +482,7 @@ const docTemplate = `{
         },
         "/api/photo/personal/createalbum": {
             "put": {
-                "description": "获取 UserId AlbumName",
+                "description": "获取 UserId  AlbumName",
                 "consumes": [
                     "application/json"
                 ],
@@ -464,7 +500,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     },
                     {
@@ -473,7 +509,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     }
                 ],
@@ -495,7 +531,7 @@ const docTemplate = `{
         },
         "/api/photo/personal/get": {
             "get": {
-                "description": "需要 UserId",
+                "description": "根据 UserId 返回个人记忆",
                 "consumes": [
                     "application/json"
                 ],
@@ -506,6 +542,86 @@ const docTemplate = `{
                     "controller"
                 ],
                 "summary": "获取个人记忆",
+                "parameters": [
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photo/personal/getfromalbum": {
+            "get": {
+                "description": "根据根据个人相册的id 返回对应的照片",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "获取个人相册指定照片",
+                "parameters": [
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photo/personal/getpersonalalbum": {
+            "get": {
+                "description": "根据 UserId 返回 相册名albumname  相册id albumid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "获取个人相册",
                 "parameters": [
                     {
                         "description": "userid",
@@ -545,7 +661,7 @@ const docTemplate = `{
                 "tags": [
                     "controller"
                 ],
-                "summary": "发布个人相册",
+                "summary": "发布个人记忆",
                 "parameters": [
                     {
                         "description": "cloudurl",
@@ -553,7 +669,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     },
                     {
@@ -562,7 +678,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     },
                     {
@@ -571,7 +687,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/controller.Message"
                         }
                     }
                 ],
@@ -593,7 +709,7 @@ const docTemplate = `{
         },
         "/api/register": {
             "put": {
-                "description": "注册",
+                "description": "前端检查验证码正确之后，再将 email 与 password 传给后端",
                 "consumes": [
                     "application/json"
                 ],
@@ -612,7 +728,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.S_User"
                         }
                     },
                     {
@@ -621,7 +737,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.S_User"
                         }
                     }
                 ],
@@ -641,9 +757,35 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/test": {
+            "get": {
+                "description": "测试",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "测试",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
         "/api/user/changename": {
             "post": {
-                "description": "保证前后两次邮箱相同，并将邮箱与更改后的密码上传",
+                "description": "保证前后两次邮箱相同，并将邮箱与更改后的昵称上传",
                 "consumes": [
                     "application/json"
                 ],
@@ -661,7 +803,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.S_User"
                         }
                     },
                     {
@@ -670,7 +812,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.S_User"
                         }
                     }
                 ],
@@ -692,7 +834,7 @@ const docTemplate = `{
         },
         "/api/user/changepassword": {
             "post": {
-                "description": "前端需保证前后两次邮箱相同，并将邮箱与更改后的密码上传",
+                "description": "检查验证码正确后，将 邮箱 与更改后的 密码 上传 （保证检查验证码时的邮箱，与上传的邮箱一致）",
                 "consumes": [
                     "application/json"
                 ],
@@ -710,7 +852,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.S_User"
                         }
                     },
                     {
@@ -719,7 +861,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.S_User"
                         }
                     }
                 ],
@@ -759,7 +901,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.S_User"
                         }
                     },
                     {
@@ -768,7 +910,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.S_User"
                         }
                     }
                 ],
@@ -790,7 +932,7 @@ const docTemplate = `{
         },
         "/api/user/group/creat": {
             "put": {
-                "description": "需要创建者的id 群名 code （目前群名不能重复）",
+                "description": "需要创建者的 id 群名 code （目前群名不能重复）",
                 "consumes": [
                     "application/json"
                 ],
@@ -808,7 +950,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Group"
+                            "$ref": "#/definitions/models.S_Group"
                         }
                     },
                     {
@@ -817,7 +959,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Group"
+                            "$ref": "#/definitions/models.S_Group"
                         }
                     },
                     {
@@ -826,7 +968,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Group"
+                            "$ref": "#/definitions/models.S_Group"
                         }
                     }
                 ],
@@ -848,7 +990,7 @@ const docTemplate = `{
         },
         "/api/user/group/join": {
             "post": {
-                "description": "需要加入者的id 加入的群名 对应的code",
+                "description": "需要 加入者的id 加入的群名 对应的code",
                 "consumes": [
                     "application/json"
                 ],
@@ -866,7 +1008,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Group"
+                            "$ref": "#/definitions/models.S_Group"
                         }
                     },
                     {
@@ -875,7 +1017,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Group"
+                            "$ref": "#/definitions/models.S_Group"
                         }
                     },
                     {
@@ -884,7 +1026,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Group"
+                            "$ref": "#/definitions/models.S_Group"
                         }
                     }
                 ],
@@ -906,7 +1048,7 @@ const docTemplate = `{
         },
         "/api/user/group/out": {
             "post": {
-                "description": "主动退出则传退出者的userid，被踢则传被踢的人的userid 还需要群名",
+                "description": "主动退出则传退出者的userid，被踢则传被踢的人的userid  还需要群名",
                 "consumes": [
                     "application/json"
                 ],
@@ -924,7 +1066,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Group"
+                            "$ref": "#/definitions/models.S_Group"
                         }
                     },
                     {
@@ -933,7 +1075,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Group"
+                            "$ref": "#/definitions/models.S_Group"
                         }
                     },
                     {
@@ -942,7 +1084,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Group"
+                            "$ref": "#/definitions/models.S_Group"
                         }
                     }
                 ],
@@ -964,6 +1106,47 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "controller.Message": {
+            "type": "object",
+            "properties": {
+                "cloudurl": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "groupcode": {
+                    "type": "string"
+                },
+                "groupid": {
+                    "type": "integer"
+                },
+                "groupname": {
+                    "type": "string"
+                },
+                "ifkeepgroupphoto": {
+                    "type": "boolean"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "personalAlbumId": {
+                    "type": "integer"
+                },
+                "personalalbumname": {
+                    "type": "string"
+                },
+                "photoid": {
+                    "type": "integer"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "userid": {
+                    "type": "integer"
+                }
+            }
+        },
         "email.Message": {
             "type": "object",
             "properties": {
@@ -981,11 +1164,65 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Group": {
-            "type": "object"
+        "models.S_Group": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "groupid": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "DeletedAt DeletedAt ` + "`" + `gorm:\"index\"` + "`" + `",
+                    "type": "string"
+                },
+                "peoplenum": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
         },
-        "models.User": {
-            "type": "object"
+        "models.S_User": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "pospersonaltnum": {
+                    "type": "integer"
+                },
+                "postcommonnum": {
+                    "type": "integer"
+                },
+                "postgroupnum": {
+                    "type": "integer"
+                },
+                "stampnum": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "username": {
+                    "description": "DeletedAt DeletedAt ` + "`" + `gorm:\"index\"` + "`" + `",
+                    "type": "string"
+                }
+            }
         },
         "response.FailMesData": {
             "type": "object"
@@ -999,7 +1236,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "iZ7xv3lwg2nwcjz6e2kxipZ",
+	Host:             "8.138.81.141",
 	BasePath:         "api",
 	Schemes:          []string{},
 	Title:            "Remembrance API",

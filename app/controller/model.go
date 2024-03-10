@@ -13,10 +13,19 @@ type Message struct {
 	Cloudurl          string `json:"cloudurl"`
 	Location          string `json:"location"`
 	PersonalAlbumName string `json:"personalalbumname"`
+	PersonalAlbumId   uint   `json:"`
 	Text              string `json:"text"`
 	GroupName         string `json:"groupname"`
 	GroupCode         string `json:"groupcode"`
 	IfKeepGroupPhoto  bool   `json:"ifkeepgroupphoto"`
+}
+
+func (mes Message) GetPersonalAlbum() models.PersonalAlbum {
+	m := models.PersonalAlbum{
+		PersonalAlbumName: mes.PersonalAlbumName,
+		User_id:           mes.UserId,
+	}
+	return m
 }
 
 func (mes Message) GetPersonalPhoto() models.PersonalPhoto {
@@ -60,6 +69,14 @@ func (mes Message) GetUser_Group() models.User_Group {
 		Group_id: mes.GroupId,
 	}
 	return group_user
+}
+
+func (mes Message) GetSearch() models.Search {
+	Search := models.Search{
+		User_id: mes.UserId,
+		Text:    mes.Location,
+	}
+	return Search
 }
 
 // func (mes Message)GetGroupCode() models.GroupCode{

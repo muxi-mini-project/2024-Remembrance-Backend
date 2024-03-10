@@ -1,27 +1,3 @@
-// 获取用户信息
-//	@Summary		获取用户信息
-//	@Description	根据用户ID获取用户详细信息
-//	@Tags			用户管理
-//	@Accept			json
-//	@Produce		json
-//	@Param			id	path		int					true	"用户ID"
-//	@Success		200	{object}	models.User			"请求成功"
-//	@Failure		400	{object}	response.ErrorMsg	"请求失败"
-//	@Router			/user/{id} [get]
-
-// 更改密码
-//
-//	@Summary		更改密码
-//	@Description	用户更改自己的密码
-//	@Tags			用户管理
-//	@Accept			json
-//	@Produce		json
-//	@Param			id				body		int					true	"用户ID"
-//	@Param			old_password	body		string				true	"旧密码"
-//	@Param			new_password	body		string				true	"新密码"
-//	@Success		200				{object}	response.OkMsg		"密码更改成功"
-//	@Failure		400				{object}	response.ErrorMsg	"密码更改失败"
-//	@Router			/user/password [post]
 package controller
 
 import (
@@ -42,8 +18,8 @@ import (
 // @Tags			user
 // @Accept			application/json
 // @Produce		application/json
-// @Param			email		body		models.User				true	"email"
-// @Param			password	body		models.User				true	"password"
+// @Param			email		body		models.S_User				true	"email"
+// @Param			password	body		models.S_User				true	"password"
 // @Success		200			{object}	response.OkMesData		`{"message":"获取成功"}`
 // @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
 // @Router			/api/user/getinfo [get]
@@ -55,12 +31,12 @@ func GetUserInfo(c *gin.Context) {
 }
 
 // @Summary		更改密码
-// @Description	前端需保证前后两次邮箱相同，并将邮箱与更改后的密码上传
+// @Description	检查验证码正确后，将 邮箱 与更改后的 密码 上传 （保证检查验证码时的邮箱，与上传的邮箱一致）
 // @Tags			user
 // @Accept			application/json
 // @Produce		application/json
-// @Param			email		body		models.User				true	"email"
-// @Param			password	body		models.User				true	"password"
+// @Param			email		body		models.S_User				true	"email"
+// @Param			password	body		models.S_User				true	"password"
 // @Success		200			{object}	response.OkMesData		`{"message":"获取成功"}`
 // @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
 // @Router			/api/user/changepassword [post]
@@ -89,12 +65,12 @@ func ChangePassword(c *gin.Context) {
 }
 
 // @Summary		更改昵称
-// @Description	保证前后两次邮箱相同，并将邮箱与更改后的密码上传
+// @Description	保证前后两次邮箱相同，并将邮箱与更改后的昵称上传
 // @Tags			user
 // @Accept			application/json
 // @Produce		application/json
-// @Param			userid	body		models.User				true	"userid"
-// @Param			name	body		models.User				true	"name"
+// @Param			userid	body		models.S_User				true	"userid"
+// @Param			name	body		models.S_User				true	"name"
 // @Success		200		{object}	response.OkMesData		`{"message":"获取成功"}`
 // @Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
 // @Router			/api/user/changename [post]
@@ -108,13 +84,13 @@ func Changename(c *gin.Context) {
 }
 
 // @Summary		创建群
-// @Description	需要创建者的id 群名 code （目前群名不能重复）
+// @Description	需要创建者的 id 群名 code （目前群名不能重复）
 // @Tags			user
 // @Accept			application/json
 // @Produce		application/json
-// @Param			userid	body		models.Group			true	"userid"
-// @Param			name	body		models.Group			true	"name"
-// @Param			code	body		models.Group			true	"code"
+// @Param			userid	body		models.S_Group			true	"userid"
+// @Param			name	body		models.S_Group			true	"name"
+// @Param			code	body		models.S_Group			true	"code"
 // @Success		200		{object}	response.OkMesData		`{"message":"创建成功"}`
 // @Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
 // @Router			/api/user/group/creat [put]
@@ -152,13 +128,13 @@ func CreateGroup(c *gin.Context) {
 }
 
 // @Summary		加入群
-// @Description	需要加入者的id 加入的群名 对应的code
+// @Description	需要 加入者的id 加入的群名 对应的code
 // @Tags			user
 // @Accept			application/json
 // @Produce		application/json
-// @Param			userid	body		models.Group			true	"userid"
-// @Param			name	body		models.Group			true	"name"
-// @Param			code	body		models.Group			true	"code"
+// @Param			userid	body		models.S_Group			true	"userid"
+// @Param			name	body		models.S_Group			true	"name"
+// @Param			code	body		models.S_Group			true	"code"
 // @Success		200		{object}	response.OkMesData		`{"message":"成功"}`
 // @Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
 // @Router			/api/user/group/join [post]
@@ -184,13 +160,13 @@ func JoinGroup(c *gin.Context) {
 }
 
 // @Summary		退出群
-// @Description	主动退出则传退出者的userid，被踢则传被踢的人的userid 还需要群名
+// @Description	主动退出则传退出者的userid，被踢则传被踢的人的userid  还需要群名
 // @Tags			user
 // @Accept			application/json
 // @Produce		application/json
-// @Param			userid	body		models.Group			true	"userid"
-// @Param			name	body		models.Group			true	"name"
-// @Param			code	body		models.Group			true	"code"
+// @Param			userid	body		models.S_Group			true	"userid"
+// @Param			name	body		models.S_Group			true	"name"
+// @Param			code	body		models.S_Group			true	"code"
 // @Success		200		{object}	response.OkMesData		`{"message":"获取成功"}`
 // @Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
 // @Router			/api/user/group/out [post]

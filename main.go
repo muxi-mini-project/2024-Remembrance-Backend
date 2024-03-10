@@ -14,7 +14,7 @@ import (
 // @description	记忆 API
 // @contact.name	lzd
 // @contact.email	2804366305@qq.com
-// @host			iZ7xv3lwg2nwcjz6e2kxipZ
+// @host			8.138.81.141
 // @BasePath		api
 func main() {
 	//读取配置文件

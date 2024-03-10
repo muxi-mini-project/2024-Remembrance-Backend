@@ -12,9 +12,9 @@ const (
 )
 
 type OkMesData /*[T LoginResp | RegisterResp] */ struct {
-	code    int
-	message string
-	data    any
+	code    int    `json:"code"`
+	message string `json:"message"`
+	data    any    `json:"data"`
 }
 
 // type OkMes struct {
@@ -24,9 +24,9 @@ type OkMesData /*[T LoginResp | RegisterResp] */ struct {
 // }
 
 type FailMesData struct {
-	code    int
-	message string
-	data    any
+	code    int    `json:"code"`
+	message string `json:"message"`
+	data    any    `json:"data"`
 }
 
 // 自定义通用消息
