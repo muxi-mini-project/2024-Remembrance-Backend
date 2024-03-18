@@ -224,7 +224,7 @@ func GetCommonPhoto(c *gin.Context) {
 // @Param			location	body		string					true	"location"
 // @Success		200			{object}	response.OkMesData		`{"message":"获取成功"}`
 // @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
-// @Router			/api/photo/common/comment/get [get]
+// @Router			/api/photo/common/comment/randget [get]
 func GetRandCommonPhoto(c *gin.Context) {
 	// 设置随机种子
 	rand.Seed(time.Now().UnixNano())

@@ -44,6 +44,7 @@ func RouterInit() *gin.Engine {
 		PhotoPost.PUT("/personal/post", controller.PostPersonalPhoto)                 //发布个人记忆
 		PhotoPost.PUT("/common/photo/post", controller.PostCommonPhoto)               //发布共同记忆
 		PhotoPost.GET("/common/photo/get", controller.GetCommonPhoto)                 //获取共同记忆
+		PhotoPost.GET("/common/photo/randget", controller.GetRandCommonPhoto)         //获取随机共同记忆
 		PhotoPost.GET("/api/photo/common/comment/getsearch", controller.GetSearch)    //获取搜索历史
 		PhotoPost.PUT("/common/comment/post", controller.PostComment)                 //发布共同评论
 		PhotoPost.GET("/common/comment/get", controller.GetCommonComment)             //获取共同评论

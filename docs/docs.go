@@ -317,6 +317,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/photo/common/comment/randget": {
+            "get": {
+                "description": "发送请求即可",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "获取随机共同记忆",
+                "parameters": [
+                    {
+                        "description": "location",
+                        "name": "location",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
         "/api/photo/common/photo/post": {
             "put": {
                 "description": "需要 UserId 图片url text location",
