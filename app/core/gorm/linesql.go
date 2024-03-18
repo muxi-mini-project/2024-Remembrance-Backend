@@ -38,6 +38,6 @@ func Newmysql() *gorm.DB {
 	db.AutoMigrate(&models.GroupPhoto{})          //多人照片
 	db.AutoMigrate(&models.GroupComment{})        //多人评论
 	db.AutoMigrate(&models.GroupCode{})           //群验证码
-	db.AutoMigrate(&models.Search{})
+	db.AutoMigrate(&models.Search{})              //搜素历史
 	return db
 }

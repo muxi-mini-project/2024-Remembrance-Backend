@@ -64,13 +64,13 @@ const docTemplate = `{
                     "200": {
                         "description": "{\"message\":\"成功\"}",
                         "schema": {
-                            "$ref": "#/definitions/response.OkMesData"
+                            "$ref": "#/definitions/controller.okmesdata"
                         }
                     },
                     "400": {
                         "description": "{\"message\":\"Failure\"}",
                         "schema": {
-                            "$ref": "#/definitions/response.FailMesData"
+                            "$ref": "#/definitions/controller.failmesdata"
                         }
                     }
                 }
@@ -111,13 +111,13 @@ const docTemplate = `{
                     "200": {
                         "description": "{\"message\":\"获取成功\"}",
                         "schema": {
-                            "$ref": "#/definitions/response.OkMesData"
+                            "$ref": "#/definitions/controller.okmesdata"
                         }
                     },
                     "400": {
                         "description": "{\"message\":\"Failure\"}",
                         "schema": {
-                            "$ref": "#/definitions/response.FailMesData"
+                            "$ref": "#/definitions/controller.failmesdata"
                         }
                     }
                 }
@@ -125,7 +125,7 @@ const docTemplate = `{
         },
         "/api/login": {
             "post": {
-                "description": "获取email password 并检查是否匹配， 匹配成功后会将成功消息与 userid 传回前端 userid 在之后会用到",
+                "description": "获取email password 并检查是否匹配， 匹配成功后会将成功消息与 userid,token(HMAC SHA256 算法创建,密钥为\"remembrance\") 传回前端, userid需要解析才能获得， 在之后会用到",
                 "consumes": [
                     "application/json"
                 ],
@@ -158,13 +158,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.OkMesData"
+                            "$ref": "#/definitions/controller.okmesdata"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.FailMesData"
+                            "$ref": "#/definitions/controller.failmesdata"
                         }
                     }
                 }
@@ -212,7 +212,7 @@ const docTemplate = `{
         },
         "/api/photo/common/comment/getsearch": {
             "get": {
-                "description": "需要 userid 返回5条搜素历史",
+                "description": "需要 userid 返回20条搜素历史",
                 "consumes": [
                     "application/json"
                 ],
@@ -396,7 +396,7 @@ const docTemplate = `{
                 "tags": [
                     "controller"
                 ],
-                "summary": "获取token",
+                "summary": "获取qntoken 用于上传图片",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -745,13 +745,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.OkMesData"
+                            "$ref": "#/definitions/controller.okmesdata"
                         }
                     },
                     "400": {
                         "description": "{\"message\":\"Failure\"}",
                         "schema": {
-                            "$ref": "#/definitions/response.FailMesData"
+                            "$ref": "#/definitions/controller.failmesdata"
                         }
                     }
                 }
@@ -1146,6 +1146,12 @@ const docTemplate = `{
                     "type": "integer"
                 }
             }
+        },
+        "controller.failmesdata": {
+            "type": "object"
+        },
+        "controller.okmesdata": {
+            "type": "object"
         },
         "email.Message": {
             "type": "object",

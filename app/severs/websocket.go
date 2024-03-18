@@ -48,7 +48,7 @@ func HandleConnections(c *gin.Context) {
 	var mes controller.Message
 	c.BindJSON(&mes)
 	var messageHistory []models.GroupPhoto
-	common.DB.Limit(7).Table("groupphotos").Where("Group_id = ?", mes.GroupId).Find(&messageHistory)
+	common.DB.Limit(20).Table("groupphotos").Where("Group_id = ?", mes.GroupId).Find(&messageHistory)
 	// 发送历史消息给新连接的客户端
 	messageHistoryLock.Lock()
 	for _, msg := range messageHistory {

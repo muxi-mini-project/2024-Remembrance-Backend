@@ -35,7 +35,7 @@ func RouterInit() *gin.Engine {
 	PhotoPost := a.Group("/api/photo")
 	{
 		//PhotoPost.POST("/test", controller.Test)         //测试上传图片
-		PhotoPost.GET("/gettoken", controller.Get_token) //获取token
+		PhotoPost.GET("/gettoken", controller.Get_QNtoken) //获取qntoken
 
 		PhotoPost.PUT("/personal/createalbum", controller.CreatePersonalAlbum)        //创建个人相册
 		PhotoPost.GET("/personal/getpersonalalbum", controller.GetPersonalAlbum)      //获取个人相册
@@ -44,10 +44,10 @@ func RouterInit() *gin.Engine {
 		PhotoPost.PUT("/personal/post", controller.PostPersonalPhoto)                 //发布个人记忆
 		PhotoPost.PUT("/common/photo/post", controller.PostCommonPhoto)               //发布共同记忆
 		PhotoPost.GET("/common/photo/get", controller.GetCommonPhoto)                 //获取共同记忆
-		PhotoPost.GET("/api/photo/common/comment/getsearch", controller.GetSearch)
-		PhotoPost.PUT("/common/comment/post", controller.PostComment)     //发布共同评论
-		PhotoPost.GET("/common/comment/get", controller.GetCommonComment) //获取共同评论
-		PhotoPost.PUT("/group/post", controller.PostGroupPhoto)           //发布多人记忆
+		PhotoPost.GET("/api/photo/common/comment/getsearch", controller.GetSearch)    //获取搜索历史
+		PhotoPost.PUT("/common/comment/post", controller.PostComment)                 //发布共同评论
+		PhotoPost.GET("/common/comment/get", controller.GetCommonComment)             //获取共同评论
+		PhotoPost.PUT("/group/post", controller.PostGroupPhoto)                       //发布多人记忆
 		//PhotoPost.GET("/group/get", controller.GetGroupPhoto)                //获取多人记忆
 	}
 
