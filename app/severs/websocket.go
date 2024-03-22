@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"net/http"
 	"remembrance/app/common"
- "remembrance/app/controller"
+	"remembrance/app/controller"
 	"remembrance/app/models"
 	"sync"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -81,6 +82,7 @@ func HandleConnections(c *gin.Context) {
 		messageHistoryLock.Unlock()
 
 		broadcast(photo) // 广播消息
+		time.Sleep(200 * time.Millisecond)
 	}
 
 	// 从 clients 集合中移除断开连接的客户端

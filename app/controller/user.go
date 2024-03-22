@@ -13,16 +13,16 @@ import (
 	"gorm.io/gorm"
 )
 
-//	@Summary		获取用户信息
-//	@Description	根据userid获取用户信息
-//	@Tags			user
-//	@Accept			application/json
-//	@Produce		application/json
-//	@Param			email		body		models.S_User			true	"email"
-//	@Param			password	body		models.S_User			true	"password"
-//	@Success		200			{object}	response.OkMesData		`{"message":"获取成功"}`
-//	@Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
-//	@Router			/api/user/getinfo [get]
+// @Summary		获取用户信息
+// @Description	根据userid获取用户信息
+// @Tags			user
+// @Accept			application/json
+// @Produce		application/json
+// @Param			email		body		models.S_User			true	"email"
+// @Param			password	body		models.S_User			true	"password"
+// @Success		200			{object}	response.OkMesData		`{"message":"获取成功"}`
+// @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
+// @Router			/api/user/getinfo [get]
 func GetUserInfo(c *gin.Context) {
 	var user models.User
 	c.BindJSON(&user)
@@ -30,16 +30,16 @@ func GetUserInfo(c *gin.Context) {
 	response.OkData(c, user)
 }
 
-//	@Summary		更改密码
-//	@Description	检查验证码正确后，将 邮箱 与更改后的 密码 上传 （保证检查验证码时的邮箱，与上传的邮箱一致）
-//	@Tags			user
-//	@Accept			application/json
-//	@Produce		application/json
-//	@Param			email		body		models.S_User			true	"email"
-//	@Param			password	body		models.S_User			true	"password"
-//	@Success		200			{object}	response.OkMesData		`{"message":"获取成功"}`
-//	@Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
-//	@Router			/api/user/changepassword [post]
+// @Summary		更改密码
+// @Description	检查验证码正确后，将 邮箱 与更改后的 密码 上传 （保证检查验证码时的邮箱，与上传的邮箱一致）
+// @Tags			user
+// @Accept			application/json
+// @Produce		application/json
+// @Param			email		body		models.S_User			true	"email"
+// @Param			password	body		models.S_User			true	"password"
+// @Success		200			{object}	response.OkMesData		`{"message":"获取成功"}`
+// @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
+// @Router			/api/user/changepassword [post]
 func ChangePassword(c *gin.Context) {
 	//获取信息
 	var user models.User
@@ -64,16 +64,16 @@ func ChangePassword(c *gin.Context) {
 	response.Ok(c)
 }
 
-//	@Summary		更改昵称
-//	@Description	保证前后两次邮箱相同，并将邮箱与更改后的昵称上传
-//	@Tags			user
-//	@Accept			application/json
-//	@Produce		application/json
-//	@Param			userid	body		models.S_User			true	"userid"
-//	@Param			name	body		models.S_User			true	"name"
-//	@Success		200		{object}	response.OkMesData		`{"message":"获取成功"}`
-//	@Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
-//	@Router			/api/user/changename [post]
+// @Summary		更改昵称
+// @Description	保证前后两次邮箱相同，并将邮箱与更改后的昵称上传
+// @Tags			user
+// @Accept			application/json
+// @Produce		application/json
+// @Param			userid	body		models.S_User			true	"userid"
+// @Param			name	body		models.S_User			true	"name"
+// @Success		200		{object}	response.OkMesData		`{"message":"获取成功"}`
+// @Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
+// @Router			/api/user/changename [post]
 func Changename(c *gin.Context) {
 	var user models.User
 	//获取信息
@@ -83,17 +83,17 @@ func Changename(c *gin.Context) {
 	response.Ok(c)
 }
 
-//	@Summary		创建群
-//	@Description	需要创建者的 id 群名 code （目前群名不能重复）
-//	@Tags			user
-//	@Accept			application/json
-//	@Produce		application/json
-//	@Param			userid	body		models.S_Group			true	"userid"
-//	@Param			name	body		models.S_Group			true	"name"
-//	@Param			code	body		models.S_Group			true	"code"
-//	@Success		200		{object}	response.OkMesData		`{"message":"创建成功"}`
-//	@Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
-//	@Router			/api/user/group/creat [put]
+// @Summary		创建群
+// @Description	需要创建者的 id 群名 code （目前群名不能重复）
+// @Tags			user
+// @Accept			application/json
+// @Produce		application/json
+// @Param			userid	body		models.S_Group			true	"userid"
+// @Param			name	body		models.S_Group			true	"name"
+// @Param			code	body		models.S_Group			true	"code"
+// @Success		200		{object}	response.OkMesData		`{"message":"创建成功"}`
+// @Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
+// @Router			/api/user/group/creat [put]
 func CreateGroup(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
@@ -127,17 +127,17 @@ func CreateGroup(c *gin.Context) {
 	response.Ok(c)
 }
 
-//	@Summary		加入群
-//	@Description	需要 加入者的id 加入的群名 对应的code
-//	@Tags			user
-//	@Accept			application/json
-//	@Produce		application/json
-//	@Param			userid	body		models.S_Group			true	"userid"
-//	@Param			name	body		models.S_Group			true	"name"
-//	@Param			code	body		models.S_Group			true	"code"
-//	@Success		200		{object}	response.OkMesData		`{"message":"成功"}`
-//	@Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
-//	@Router			/api/user/group/join [post]
+// @Summary		加入群
+// @Description	需要 加入者的id 加入的群名 对应的code
+// @Tags			user
+// @Accept			application/json
+// @Produce		application/json
+// @Param			userid	body		models.S_Group			true	"userid"
+// @Param			name	body		models.S_Group			true	"name"
+// @Param			code	body		models.S_Group			true	"code"
+// @Success		200		{object}	response.OkMesData		`{"message":"成功"}`
+// @Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
+// @Router			/api/user/group/join [post]
 func JoinGroup(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
@@ -159,17 +159,17 @@ func JoinGroup(c *gin.Context) {
 
 }
 
-//	@Summary		退出群
-//	@Description	主动退出则传退出者的userid，被踢则传被踢的人的userid  还需要群名
-//	@Tags			user
-//	@Accept			application/json
-//	@Produce		application/json
-//	@Param			userid	body		models.S_Group			true	"userid"
-//	@Param			name	body		models.S_Group			true	"name"
-//	@Param			code	body		models.S_Group			true	"code"
-//	@Success		200		{object}	response.OkMesData		`{"message":"获取成功"}`
-//	@Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
-//	@Router			/api/user/group/out [post]
+// @Summary		退出群
+// @Description	主动退出则传退出者的userid，被踢则传被踢的人的userid  还需要群名
+// @Tags			user
+// @Accept			application/json
+// @Produce		application/json
+// @Param			userid	body		models.S_Group			true	"userid"
+// @Param			name	body		models.S_Group			true	"name"
+// @Param			code	body		models.S_Group			true	"code"
+// @Success		200		{object}	response.OkMesData		`{"message":"获取成功"}`
+// @Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
+// @Router			/api/user/group/out [post]
 func OutGroup(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
@@ -180,7 +180,7 @@ func OutGroup(c *gin.Context) {
 	//删除关系
 	common.DB.Delete(&usergroup)
 	//该群人数减1
-	common.DB.Table("Groups").Where("Id = ?", mes.GroupId).First(&group).Update("PeopleNum", group.PeopleNum-1)
+	common.DB.Table("`Groups`").Where("Id = ?", mes.GroupId).First(&group).Update("People_Num", group.PeopleNum-1)
 	//判断是否保留
 	if mes.IfKeepGroupPhoto {
 		//保留
@@ -190,4 +190,28 @@ func OutGroup(c *gin.Context) {
 		common.DB.Delete(&groupphoto)
 		response.Ok(c)
 	}
+}
+
+// @Summary		获取群
+// @Description	传入userid 获得该用户所加入的群信息
+// @Tags			user
+// @Accept			application/json
+// @Produce		application/json
+// @Param			userid	body		models.S_Group			true	"userid"
+// @Success		200		{object}	response.OkMesData		`{"message":"获取成功"}`
+// @Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
+// @Router			/api/user/group/get [get]
+func GetGroup(c *gin.Context) {
+	var mes Message
+	c.BindJSON(&mes)
+	var gp []models.User_Group
+	//获取对应的群id
+	common.DB.Limit(20).Table("user_groups").Where("user_id = ?", mes.UserId).Find(&gp)
+	//获取对应群信息
+	var groups []models.Group
+	for i, group := range gp {
+		common.DB.Limit(20).Table("groups").Where("id = ?", group.Group_id).Find(&groups[i])
+	}
+
+	response.OkData(c, groups)
 }

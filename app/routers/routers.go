@@ -23,6 +23,7 @@ func RouterInit() *gin.Engine {
 		UserGroup.GET("/getinfo", controller.GetUserInfo)            //获取个人信息
 		UserGroup.POST("/changepassword", controller.ChangePassword) //更改密码
 		UserGroup.POST("/changename", controller.Changename)         //更改用户名
+		UserGroup.GET("/group/get", controller.GetGroup)             //获取群
 		UserGroup.PUT("/group/creat", controller.CreateGroup)        //创建群
 		UserGroup.POST("/group/join", controller.JoinGroup)          //加入群
 		UserGroup.POST("/group/out", controller.OutGroup)            //退出或踢出群

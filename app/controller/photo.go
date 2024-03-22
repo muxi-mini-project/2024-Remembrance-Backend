@@ -27,7 +27,7 @@ import (
 func CreatePersonalAlbum(c *gin.Context) {
 	var album models.PersonalAlbum
 	c.ShouldBindJSON(&album)
-	//album.Photo_num = 0
+	album.Photo_num = 0
 	common.DB.Create(&album)
 	response.Ok(c)
 }
@@ -45,7 +45,7 @@ func GetPersonalAlbum(c *gin.Context) {
 	var mes Message
 	c.ShouldBindJSON(&mes)
 	var album []models.PersonalAlbum
-	common.DB.Limit(20).Table("personalalbums").Where("User_id = ?", mes.UserId).Find(&album)
+	common.DB.Limit(20).Table("Personal_albums").Where("User_id = ?", mes.UserId).Find(&album)
 	response.OkData(c, album)
 }
 
@@ -63,26 +63,27 @@ func GetPersonalPhotoFromAlbum(c *gin.Context) {
 	c.ShouldBindJSON(&mes)
 	album := mes.GetPersonalAlbum()
 	var photo []models.PersonalAlbum_Photo
-	common.DB.Limit(20).Table("personalalbums").Where("PersonalAlbum_id = ?", album.ID).Find(&photo)
+	common.DB.Limit(20).Table("Personal_Albums").Where("Personal_Album_id = ?", album.ID).Find(&photo)
 	i := 0
 	personalphotos := make([]models.PersonalPhoto, 0)
 	for _, p := range photo {
-		common.DB.Table("PersonalPhotos").Where("id = ?", p.Photo_id).First(&personalphotos[i])
+		common.DB.Table("Personal_Photos").Where("id = ?", p.Photo_id).First(&personalphotos[i])
 		i++
 	}
 	response.OkData(c, personalphotos)
 }
 
 // @Summary		发布个人记忆
-// @Description	需要 UserId 图片url text
+// @Description	需要 UserId 相册名PersonalAlbumName 图片url text
 // @Tags			controller
 // @Accept			json
 // @Produce		json
-// @Param			cloudurl	body		Message					true	"cloudurl"
-// @Param			text		body		Message					true	"text"
-// @Param			userid		body		Message					true	"userid"
-// @Success		200			{object}	response.OkMesData		`{"message":"成功"}`
-// @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
+// @Param			personalalbumname	body		Message					true	"personalalbumname"
+// @Param			cloudurl			body		Message					true	"cloudurl"
+// @Param			text				body		Message					true	"text"
+// @Param			userid				body		Message					true	"userid"
+// @Success		200					{object}	response.OkMesData		`{"message":"成功"}`
+// @Failure		400					{object}	response.FailMesData	`{"message":"Failure"}`
 // @Router			/api/photo/personal/post [put]
 func PostPersonalPhoto(c *gin.Context) {
 	var mes Message
@@ -93,15 +94,16 @@ func PostPersonalPhoto(c *gin.Context) {
 	//获取图片信息
 	photo := mes.GetPersonalPhoto()
 	//找到该用户的个人相册
-	common.DB.Table("PersonalAlbum").Where("User_id = ", mes.PersonalAlbumName).First(&album)
+	common.DB.Table("Personal_Albums").Where("User_id = ? AND Personal_Album_Name = ?", mes.UserId, mes.PersonalAlbumName).First(&album)
 	//印记数加一
-	common.DB.Model(&user).First(&user, "ID = ?", mes.UserId).Update("StampNum", user.StampNum+1).Update("PostNum", user.PostPersonalNum+1)
+	common.DB.Model(&user).First(&user, "ID = ?", mes.UserId).Update("Stamp_Num", user.StampNum+1).Update("Post_Personal_Num", user.PostPersonalNum+1)
 	//将图片的url入库
 	common.DB.Create(&photo)
 	common.DB.Table("photos").Where("Cloudurl = ?", photo.Cloudurl).First(&photo)
 	//与相册关联
 	Creat_album_photo(album.ID, photo.ID)
-	common.DB.Model(&album).First(&album, "id = ?", album.ID).Update("Photo_num", album.Photo_num+1)
+	common.DB.Table("Personal_Albums").Where("User_id = ? AND Personal_Album_Name = ?", mes.UserId, mes.PersonalAlbumName).Update("Photo_num", album.Photo_num+1)
+	//common.DB.Model(&album).First(&album, "id = ?", album.ID).Update("Photo_num", album.Photo_num+1)
 	response.Ok(c)
 }
 
@@ -118,7 +120,7 @@ func GetPersonalPhoto(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
 	var photos []models.PersonalPhoto
-	common.DB.Limit(20).Table("personalphotos").Where("User_id = ?", mes.UserId).Find(&photos)
+	common.DB.Limit(20).Table("personal_photos").Where("User_id = ?", mes.UserId).Find(&photos)
 	response.OkData(c, photos)
 }
 
@@ -142,7 +144,7 @@ func PostCommonPhoto(c *gin.Context) {
 	common.DB.Create(&photo)
 	//查询相册
 	var album models.CommonAlbum
-	err := common.DB.Table("commonalbums").Where("location = ?", photo.Location).First(&album).Error
+	err := common.DB.Table("common_albums").Where("location = ?", photo.Location).First(&album).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			// 没有找到匹配的记录，创建一个相册
@@ -181,7 +183,7 @@ func PostGroupPhoto(c *gin.Context) {
 	//获取用户信息
 	user := mes.GetUser()
 	//印记数加一
-	common.DB.Model(&user).First(&user, "ID = ?", user.ID).Update("StampNum", user.StampNum+1).Update("PostNum", user.PostGroupNum+1)
+	common.DB.Model(&user).First(&user, "ID = ?", user.ID).Update("Stamp_Num", user.StampNum+1).Update("Post_Num", user.PostGroupNum+1)
 	response.Ok(c)
 }
 
@@ -209,7 +211,7 @@ func GetCommonPhoto(c *gin.Context) {
 	c.BindJSON(&mes)
 	//查找图片
 	var photos []models.CommonPhoto
-	common.DB.Limit(20).Table("commonphotos").Where("location = ?", mes.Location).Find(&photos)
+	common.DB.Limit(20).Table("common_photos").Where("location = ?", mes.Location).Find(&photos)
 	//记录
 	search := mes.GetSearch()
 	common.DB.Create(&search)
@@ -239,9 +241,9 @@ func GetRandCommonPhoto(c *gin.Context) {
 // @Tags			controller
 // @Accept			json
 // @Produce		json
-// @Param			location	body		string					true	"location"
-// @Success		200			{object}	response.OkMesData		`{"message":"获取成功"}`
-// @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
+// @Param			userid	body		string					true	"location"
+// @Success		200		{object}	response.OkMesData		`{"message":"获取成功"}`
+// @Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
 // @Router			/api/photo/common/comment/getsearch [get]
 func GetSearch(c *gin.Context) {
 	var mes Message
@@ -287,7 +289,7 @@ func GetCommonComment(c *gin.Context) {
 }
 
 // @Summary		获取qntoken 用于上传图片
-// @Description	发送请求即可
+// @Description	发送请求即可 发送请求即可 用于上传图片
 // @Tags			controller
 // @Accept			json
 // @Produce		json
