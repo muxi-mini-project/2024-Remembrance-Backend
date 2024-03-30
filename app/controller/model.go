@@ -13,7 +13,7 @@ type Message struct {
 	Cloudurl          string `json:"cloudurl"`
 	Location          string `json:"location"`
 	PersonalAlbumName string `json:"personalalbumname"`
-	PersonalAlbumId   uint   `json:"`
+	PersonalAlbumId   uint   `json:"personalAlbumId"`
 	Text              string `json:"text"`
 	GroupName         string `json:"groupname"`
 	GroupCode         string `json:"groupcode"`

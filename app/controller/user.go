@@ -192,6 +192,28 @@ func OutGroup(c *gin.Context) {
 	}
 }
 
+// @Summary		解散群
+// @Description	传入被解散的群的id就行，确保只有群主能执行这个操作
+// @Tags			user
+// @Accept			application/json
+// @Produce		application/json
+// @Param			groupid	body		models.S_Group			true	"groupid"
+// @Success		200		{object}	response.OkMesData		`{"message":"获取成功"}`
+// @Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
+// @Router			/api/user/group/delete [post]
+func DeleteGroup(c *gin.Context) {
+	var mes Message
+	c.BindJSON(&mes)
+
+	group := mes.GetGroup()
+	//删除群
+	common.DB.Delete(&group)
+	//删除关系
+	var usergroup models.User_Group
+	common.DB.Table("User_Groups").Where("Group_id = ?", mes.GroupId).Delete(&usergroup)
+	response.Ok(c)
+}
+
 // @Summary		获取群
 // @Description	传入userid 获得该用户所加入的群信息
 // @Tags			user

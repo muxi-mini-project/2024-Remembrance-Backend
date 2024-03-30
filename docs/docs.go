@@ -76,6 +76,135 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/common/photo/delete": {
+            "post": {
+                "description": "需要图片 photoid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "删除共同记忆",
+                "parameters": [
+                    {
+                        "description": "photoid",
+                        "name": "photoid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/common/photo/get": {
+            "post": {
+                "description": "需要 userid(用于记录搜索历史) location 传回的信息中包含url photoid text",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "获取指定地点的共同记忆",
+                "parameters": [
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "location",
+                        "name": "location",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/common/photo/getself": {
+            "post": {
+                "description": "需要 userid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "获取自己发布的共同记忆",
+                "parameters": [
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
         "/api/get_code": {
             "get": {
                 "description": "根据情况向指定邮箱发送不同时限的验证码，",
@@ -226,7 +355,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "location",
-                        "name": "location",
+                        "name": "userid",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -426,7 +555,7 @@ const docTemplate = `{
         },
         "/api/photo/gettoken": {
             "get": {
-                "description": "发送请求即可",
+                "description": "发送请求即可 发送请求即可 用于上传图片",
                 "consumes": [
                     "application/json"
                 ],
@@ -546,6 +675,104 @@ const docTemplate = `{
                     {
                         "description": "personalalbumname",
                         "name": "personalalbumname",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photo/personal/delete": {
+            "post": {
+                "description": "需要 UserId 相册id: personalalbumid  图片id：photoid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "删除个人记忆",
+                "parameters": [
+                    {
+                        "description": "photoid",
+                        "name": "photoid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.Message"
+                        }
+                    },
+                    {
+                        "description": "personalalbumid",
+                        "name": "personalalbumid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.Message"
+                        }
+                    },
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/photo/personal/deletealbum": {
+            "post": {
+                "description": "获取相册的id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "删除个人相册",
+                "parameters": [
+                    {
+                        "description": "id",
+                        "name": "id",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -691,7 +918,7 @@ const docTemplate = `{
         },
         "/api/photo/personal/post": {
             "put": {
-                "description": "需要 UserId 图片url text",
+                "description": "需要 UserId 相册名PersonalAlbumName 图片url text",
                 "consumes": [
                     "application/json"
                 ],
@@ -703,6 +930,15 @@ const docTemplate = `{
                 ],
                 "summary": "发布个人记忆",
                 "parameters": [
+                    {
+                        "description": "personalalbumname",
+                        "name": "personalalbumname",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.Message"
+                        }
+                    },
                     {
                         "description": "cloudurl",
                         "name": "cloudurl",
@@ -1005,6 +1241,86 @@ const docTemplate = `{
                     {
                         "description": "code",
                         "name": "code",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.S_Group"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/group/delete": {
+            "post": {
+                "description": "传入被解散的群的id就行，确保只有群主能执行这个操作",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "解散群",
+                "parameters": [
+                    {
+                        "description": "groupid",
+                        "name": "groupid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.S_Group"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/group/get": {
+            "get": {
+                "description": "传入userid 获得该用户所加入的群信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "获取群",
+                "parameters": [
+                    {
+                        "description": "userid",
+                        "name": "userid",
                         "in": "body",
                         "required": true,
                         "schema": {

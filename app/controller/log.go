@@ -57,7 +57,7 @@ func Login(c *gin.Context) {
 	if user.Password == loguser.Password {
 		//密码正确
 		c.Header("Authorization", token)
-		response.OkMsg(c, "登录成功")
+		response.OkMsgData(c, "登录成功", user.ID)
 		return
 	} else {
 		//密码错误

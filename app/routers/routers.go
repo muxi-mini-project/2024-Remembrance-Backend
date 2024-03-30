@@ -12,7 +12,8 @@ func RouterInit() *gin.Engine {
 	//登录，注册
 	LoginGroup := a.Group("/api")
 	{
-		LoginGroup.GET("/get_code", controller.Get_code)      //获取验证码
+		LoginGroup.POST("/get_code", controller.Get_code) //获取验证码
+		//LoginGroup.GET("/get_code", controller.Get_code)      //获取验证码
 		LoginGroup.POST("/check_code", controller.Check_Code) //检查验证码
 		LoginGroup.PUT("/register", controller.Register)      //注册
 		LoginGroup.POST("", controller.Login)                 //登录
@@ -20,15 +21,18 @@ func RouterInit() *gin.Engine {
 	//用户相关路由
 	UserGroup := a.Group("/api/user")
 	{
-		UserGroup.GET("/getinfo", controller.GetUserInfo)            //获取个人信息
+		UserGroup.POST("/getinfo", controller.GetUserInfo)           //获取个人信息
 		UserGroup.POST("/changepassword", controller.ChangePassword) //更改密码
 		UserGroup.POST("/changename", controller.Changename)         //更改用户名
-		UserGroup.GET("/group/get", controller.GetGroup)             //获取群
+		UserGroup.POST("/group/get", controller.GetGroup)            //获取群
 		UserGroup.PUT("/group/creat", controller.CreateGroup)        //创建群
 		UserGroup.POST("/group/join", controller.JoinGroup)          //加入群
 		UserGroup.POST("/group/out", controller.OutGroup)            //退出或踢出群
-		UserGroup.GET("/group/line", severs.HandleConnections)       //websocket
+		UserGroup.POST("/group/delete", controller.OutGroup)         //退出或踢出群
+		UserGroup.POST("/group/line", severs.HandleConnections)      //websocket
 		//UserGroup.POST("/group/out", controller.OutGroup)            //踢出群
+		//UserGroup.GET("/getinfo", controller.GetUserInfo)            //获取个人信息
+		//UserGroup.GET("/group/get", controller.GetGroup)             //获取群
 
 	}
 
@@ -38,18 +42,23 @@ func RouterInit() *gin.Engine {
 		//PhotoPost.POST("/test", controller.Test)         //测试上传图片
 		PhotoPost.GET("/gettoken", controller.Get_QNtoken) //获取qntoken
 
-		PhotoPost.PUT("/personal/createalbum", controller.CreatePersonalAlbum)        //创建个人相册
-		PhotoPost.GET("/personal/getpersonalalbum", controller.GetPersonalAlbum)      //获取个人相册
-		PhotoPost.GET("/personal/getfromalbum", controller.GetPersonalPhotoFromAlbum) //根据相册获得个人记忆
-		PhotoPost.GET("/personal/get", controller.GetPersonalPhoto)                   //获得个人记忆
-		PhotoPost.PUT("/personal/post", controller.PostPersonalPhoto)                 //发布个人记忆
-		PhotoPost.PUT("/common/photo/post", controller.PostCommonPhoto)               //发布共同记忆
-		PhotoPost.GET("/common/photo/get", controller.GetCommonPhoto)                 //获取共同记忆
-		PhotoPost.GET("/common/photo/randget", controller.GetRandCommonPhoto)         //获取随机共同记忆
-		PhotoPost.GET("/api/photo/common/comment/getsearch", controller.GetSearch)    //获取搜索历史
-		PhotoPost.PUT("/common/comment/post", controller.PostComment)                 //发布共同评论
-		PhotoPost.GET("/common/comment/get", controller.GetCommonComment)             //获取共同评论
-		PhotoPost.PUT("/group/post", controller.PostGroupPhoto)                       //发布多人记忆
+		PhotoPost.PUT("/personal/createalbum", controller.CreatePersonalAlbum)         //创建个人相册
+		PhotoPost.POST("/personal/getpersonalalbum", controller.GetPersonalAlbum)      //获取个人相册
+		PhotoPost.POST("/personal/deletealbum", controller.GetPersonalAlbum)           //删除个人相册
+		PhotoPost.POST("/personal/getfromalbum", controller.GetPersonalPhotoFromAlbum) //根据相册获得个人记忆
+		PhotoPost.POST("/personal/get", controller.GetPersonalPhoto)                   //获得个人记忆
+		PhotoPost.PUT("/personal/post", controller.PostPersonalPhoto)                  //发布个人记忆
+		PhotoPost.POST("/personal/delete", controller.DeletePersonalPhoto)             //删除个人记忆
+		PhotoPost.PUT("/common/photo/post", controller.PostCommonPhoto)                //发布共同记忆
+		PhotoPost.POST("/common/photo/delete", controller.DeleteCommonPhoto)           //发布共同记忆
+		PhotoPost.POST("/common/photo/getself", controller.GetSelfCommonPhoto)         //获取自己发布的共同记忆
+		PhotoPost.POST("/common/photo/get", controller.GetCommonPhoto)                 //获取指定地点共同记忆
+		PhotoPost.GET("/common/photo/randget", controller.GetRandCommonPhoto)          //获取随机共同记忆
+		PhotoPost.POST("/api/photo/common/comment/getsearch", controller.GetSearch)    //获取搜索历史
+		PhotoPost.PUT("/common/comment/post", controller.PostComment)                  //发布共同评论
+		PhotoPost.POST("/common/comment/get", controller.GetCommonComment)             //获取共同评论
+		PhotoPost.PUT("/group/post", controller.PostGroupPhoto)                        //发布多人记忆
+		//PhotoPost.GET("/personal/getpersonalalbum", controller.GetPersonalAlbum)      //获取个人相册
 		//PhotoPost.GET("/group/get", controller.GetGroupPhoto)                //获取多人记忆
 	}
 
