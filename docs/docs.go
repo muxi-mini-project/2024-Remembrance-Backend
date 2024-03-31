@@ -916,6 +916,55 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/photo/personal/numget": {
+            "get": {
+                "description": "根据 UserId 返回个人记忆",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "controller"
+                ],
+                "summary": "获取指定数量的最新的个人记忆",
+                "parameters": [
+                    {
+                        "description": "userid",
+                        "name": "userid",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.Message"
+                        }
+                    },
+                    {
+                        "description": "num",
+                        "name": "num",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OkMesData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.FailMesData"
+                        }
+                    }
+                }
+            }
+        },
         "/api/photo/personal/post": {
             "put": {
                 "description": "需要 UserId 相册名PersonalAlbumName 图片url text",
@@ -1485,6 +1534,9 @@ const docTemplate = `{
                 },
                 "location": {
                     "type": "string"
+                },
+                "num": {
+                    "type": "integer"
                 },
                 "personalAlbumId": {
                     "type": "integer"

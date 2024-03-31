@@ -89,7 +89,7 @@ func Get_code(c *gin.Context) {
 	case "register":
 		{ //检查账户是否存在
 			var user models.User
-			if err := common.DB. /*.Table("users")*/ First(&user, "Email = ?", mes.Email).Error; err != nil {
+			if err := common.DB.Table("users").Where("Emial = ?", mes.Email).First(&user).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					// 没有找到匹配的记录
 					//向目标邮箱发送验证码
@@ -172,21 +172,37 @@ func Check_Code(c *gin.Context) {
 // @Router			/api/register [put]
 func Register(c *gin.Context) {
 	//获取信息
-	var user models.User
+	var user, u models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	//为用户建表
-	common.DB.Create(&user)
-	//创建一个默认相册
-	album := models.PersonalAlbum{
-		PersonalAlbumName: "我的记忆",
-		User_id:           user.ID,
-		Photo_num:         0,
+	if err := common.DB.Table("users").Where("Emial = ?", user.Email).First(&u).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			// 没有找到匹配的记录
+			//进行注册操作
+			//为用户建表
+			common.DB.Create(&user)
+			//创建一个默认相册
+			album := models.PersonalAlbum{
+				PersonalAlbumName: "我的记忆",
+				User_id:           user.ID,
+				Photo_num:         0,
+			}
+			common.DB.Create(&album)
+			response.OkMsg(c, "注册成功")
+			return
+		} else {
+			// 其他查询错误
+			fmt.Printf("查询错误: %s\n", err.Error())
+			return
+		}
+	} else {
+		// 找到匹配的记录，可以使用 user 变量
+		//fmt.Printf("找到用户记录: %+v\n", user)
+		response.FailMsg(c, "该邮箱已存在")
+		return
 	}
-	common.DB.Create(&album)
-	response.OkMsg(c, "注册成功")
 }
 
 type okmesdata struct {
