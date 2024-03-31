@@ -24,10 +24,10 @@ import (
 // @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
 // @Router			/api/user/getinfo [get]
 func GetUserInfo(c *gin.Context) {
-	var user models.User
+	var user, u models.User
 	c.BindJSON(&user)
-	common.DB.Table("users").Where("ID = ?", user.ID).First(&user)
-	response.OkData(c, user)
+	common.DB.Table("users").Where("ID = ?", user.ID).First(&u)
+	response.OkData(c, u)
 }
 
 // @Summary		更改密码
@@ -79,7 +79,7 @@ func Changename(c *gin.Context) {
 	//获取信息
 	c.BindJSON(&user)
 	//更改
-	common.DB.Table("users").Where("email = ", user.Email).Update("name", user.Name)
+	common.DB.Table("users").Where("email = ?", user.Email).Update("name", user.Name)
 	response.Ok(c)
 }
 

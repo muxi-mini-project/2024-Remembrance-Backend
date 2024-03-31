@@ -6,6 +6,7 @@ import (
 )
 
 type Message struct {
+	Number            int    `json:"num"`
 	UserId            uint   `json:"userid"`
 	GroupId           uint   `json:"groupid"`
 	PhotoId           uint   `json:"photoid"`

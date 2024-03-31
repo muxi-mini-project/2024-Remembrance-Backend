@@ -47,6 +47,7 @@ func RouterInit() *gin.Engine {
 		PhotoPost.POST("/personal/deletealbum", controller.GetPersonalAlbum)           //删除个人相册
 		PhotoPost.POST("/personal/getfromalbum", controller.GetPersonalPhotoFromAlbum) //根据相册获得个人记忆
 		PhotoPost.POST("/personal/get", controller.GetPersonalPhoto)                   //获得个人记忆
+		PhotoPost.POST("/personal/numget", controller.GetNumPersonalPhoto)             //获得指定数量的最新个人记忆
 		PhotoPost.PUT("/personal/post", controller.PostPersonalPhoto)                  //发布个人记忆
 		PhotoPost.POST("/personal/delete", controller.DeletePersonalPhoto)             //删除个人记忆
 		PhotoPost.PUT("/common/photo/post", controller.PostCommonPhoto)                //发布共同记忆
