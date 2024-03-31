@@ -1,8 +1,12 @@
 package controller
 
 import (
+	"errors"
+	"fmt"
 	"remembrance/app/common"
 	"remembrance/app/models"
+
+	"gorm.io/gorm"
 )
 
 type Message struct {
@@ -48,11 +52,21 @@ func (mes Message) GetGroupPhoto() models.GroupPhoto {
 	return m
 }
 
-func (mes Message) GetUser() models.User {
+func (mes Message) GetUser() (error, models.User) {
 	var user models.User
-	user.ID = mes.UserId
-	common.DB.First(&user)
-	return user
+	if err := common.DB.Table("users").Where("id = ?", mes.UserId).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			// 没有找到匹配的记录
+			return err, user
+		} else {
+			// 其他查询错误
+			fmt.Printf("查询错误: %s\n", err.Error())
+			return err, user
+		}
+	} else {
+		// 找到匹配的记录，可以使用 user 变量
+		return nil, user
+	}
 }
 
 func (mes Message) GetGroup() models.Group {

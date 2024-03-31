@@ -112,3 +112,13 @@ func FailData(ctx *gin.Context, data any) {
 	}
 	ctx.JSON(http.StatusOK, obj)
 }
+
+// 携带数据的失败响应
+func FailMsgData(ctx *gin.Context, message string, data any) {
+	obj := gin.H{
+		"code":    FAIL,
+		"message": message,
+		"data":    data,
+	}
+	ctx.JSON(http.StatusOK, obj)
+}

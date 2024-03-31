@@ -101,20 +101,23 @@ func CreateGroup(c *gin.Context) {
 	group := mes.GetGroup()
 	var g models.Group
 	//检查群名是否已经被使用
-	if err := common.DB.Table("groups").First(&g, "Name = ?", mes.GroupName).Error; err != nil {
+	if err := common.DB.Table("groups").Where("name = ?", mes.GroupName).First(&g).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			// 没有找到匹配的记录
 			//创建群
 			common.DB.Create(&group)
-			response.OkMsg(c, "群已创建")
+			//response.OkMsg(c, "群已创建")
 		} else {
 			// 其他查询错误
 			fmt.Printf("查询错误: %s\n", err.Error())
+			response.FailMsgData(c, "未知错误", err)
+			return
 		}
 	} else {
-		// 找到匹配的记录，可以使用 user 变量
+		// 找到匹配的记录
 		//fmt.Printf("找到用户记录: %+v\n", user)
 		response.FailMsg(c, "该群名已使用")
+		return
 	}
 
 	//建立关系
@@ -124,6 +127,7 @@ func CreateGroup(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
+	common.DB.Table("")
 	response.Ok(c)
 }
 
@@ -231,8 +235,10 @@ func GetGroup(c *gin.Context) {
 	common.DB.Limit(20).Table("user_groups").Where("user_id = ?", mes.UserId).Find(&gp)
 	//获取对应群信息
 	var groups []models.Group
-	for i, group := range gp {
-		common.DB.Limit(20).Table("groups").Where("id = ?", group.Group_id).Find(&groups[i])
+	for _, group := range gp {
+		var info models.Group
+		common.DB.Limit(20).Table("groups").Where("id = ?", group.Group_id).Find(&info)
+		groups = append(groups, info)
 	}
 
 	response.OkData(c, groups)
