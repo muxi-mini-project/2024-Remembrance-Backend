@@ -44,9 +44,9 @@ func CreatePersonalAlbum(c *gin.Context) {
 func DeletePersonalAlbum(c *gin.Context) {
 	var album models.PersonalAlbum
 	c.ShouldBindJSON(&album)
-	common.DB.Table("albums").Where("Id = ?", album.ID).Delete(&album)
+	common.DB.Table("personal_albums").Where("Id = ?", album.ID).Delete(&album)
 	var u_a models.PersonalAlbum_Photo
-	common.DB.Table("PersonalAlbum_Photos").Where("PersonalAlbum_id = ?", album.ID).Delete(u_a)
+	common.DB.Table("personal_album_photos").Where("personal_album_id = ?", album.ID).Delete(&u_a)
 	response.Ok(c)
 }
 
@@ -79,14 +79,14 @@ func GetPersonalAlbum(c *gin.Context) {
 func GetPersonalPhotoFromAlbum(c *gin.Context) {
 	var mes Message
 	c.ShouldBindJSON(&mes)
-	album := mes.GetPersonalAlbum()
 	var photo []models.PersonalAlbum_Photo
-	common.DB.Limit(20).Table("personal_albums").Where("personal_album_id = ?", album.ID).Find(&photo)
-	i := 0
-	personalphotos := make([]models.PersonalPhoto, 0)
+	common.DB.Limit(20).Table("personal_album_photos").Where("personal_album_id = ?", mes.PersonalAlbumId).Find(&photo)
+	var personalphotos []models.PersonalPhoto
 	for _, p := range photo {
-		common.DB.Table("personal_photos").Where("id = ?", p.Photo_id).First(&personalphotos[i])
-		i++
+		var info models.PersonalPhoto
+		common.DB.Table("personal_photos").Where("id = ?", p.Photo_id).Find(&info)
+		personalphotos = append(personalphotos, info)
+
 	}
 	response.OkData(c, personalphotos)
 }
@@ -234,7 +234,7 @@ func DeleteCommonPhoto(c *gin.Context) {
 	c.BindJSON(&mes)
 	//删除照片
 	var ph models.CommonPhoto
-	common.DB.Table("pcommon_photos").Where("Id = ?", mes.PhotoId).Delete(&ph)
+	common.DB.Table("common_photos").Where("Id = ?", mes.PhotoId).Delete(&ph)
 	response.Ok(c)
 }
 
@@ -348,7 +348,7 @@ func GetRandCommonPhoto(c *gin.Context) {
 func GetSearch(c *gin.Context) {
 	var mes Message
 	var search []models.Search
-	common.DB.Limit(20).Table("searchs").Where("User_id = ?", mes.UserId).Find(&search)
+	common.DB.Limit(20).Table("searches").Where("User_id = ?", mes.UserId).Find(&search)
 	response.OkData(c, search)
 }
 
@@ -397,6 +397,6 @@ func GetCommonComment(c *gin.Context) {
 // @Failure		400	{object}	response.FailMesData	`{"message":"Failure"}`
 // @Router			/api/photo/gettoken [get]
 func Get_QNtoken(c *gin.Context) {
-	token := tube.GetQNToken()
-	response.OkMsg(c, token)
+	qndata := tube.GetQNToken()
+	response.OkData(c, qndata)
 }

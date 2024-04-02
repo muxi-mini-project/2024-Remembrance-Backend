@@ -28,6 +28,11 @@ var Q Qiniu
 // 	}
 // }
 
+type QnData struct {
+	QnToken string
+	Domain  string
+}
+
 func Load() {
 	Q = Qiniu{
 		AccessKey: common.CONFIG.Oss.AccessKey,
@@ -60,14 +65,18 @@ func UploadFileToQiniu(localFilePath string) (string, error) {
 }
 
 // 获取token
-func GetQNToken() string {
+func GetQNToken() QnData {
 	var maxInt uint64 = 1 << 32
 	putPolicy := storage.PutPolicy{
 		Scope:   Q.Bucket,
 		Expires: maxInt,
 	}
 	mac := qbox.NewMac(Q.AccessKey, Q.SecretKey)
-	QNToken := putPolicy.UploadToken(mac)
+	var d QnData
+	token := putPolicy.UploadToken(mac)
+	d.QnToken = token
+	d.Domain = Q.Domain
 	//fmt.Println(QNToken) //test
-	return QNToken
+
+	return d
 }

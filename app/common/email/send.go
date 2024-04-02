@@ -5,6 +5,7 @@ import (
 	"net/smtp"
 	"remembrance/app/common"
 	"remembrance/app/common/tool"
+
 	"time"
 
 	"github.com/go-redis/redis"

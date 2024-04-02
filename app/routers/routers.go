@@ -44,14 +44,14 @@ func RouterInit() *gin.Engine {
 
 		PhotoPost.PUT("/personal/createalbum", controller.CreatePersonalAlbum)         //创建个人相册
 		PhotoPost.POST("/personal/getpersonalalbum", controller.GetPersonalAlbum)      //获取个人相册
-		PhotoPost.POST("/personal/deletealbum", controller.GetPersonalAlbum)           //删除个人相册
+		PhotoPost.POST("/personal/deletealbum", controller.DeletePersonalAlbum)        //删除个人相册
 		PhotoPost.POST("/personal/getfromalbum", controller.GetPersonalPhotoFromAlbum) //根据相册获得个人记忆
 		PhotoPost.POST("/personal/get", controller.GetPersonalPhoto)                   //获得个人记忆
 		PhotoPost.POST("/personal/numget", controller.GetNumPersonalPhoto)             //获得指定数量的最新个人记忆
 		PhotoPost.PUT("/personal/post", controller.PostPersonalPhoto)                  //发布个人记忆
 		PhotoPost.POST("/personal/delete", controller.DeletePersonalPhoto)             //删除个人记忆
 		PhotoPost.PUT("/common/photo/post", controller.PostCommonPhoto)                //发布共同记忆
-		PhotoPost.POST("/common/photo/delete", controller.DeleteCommonPhoto)           //发布共同记忆
+		PhotoPost.POST("/common/photo/delete", controller.DeleteCommonPhoto)           //删除共同记忆
 		PhotoPost.POST("/common/photo/getself", controller.GetSelfCommonPhoto)         //获取自己发布的共同记忆
 		PhotoPost.POST("/common/photo/get", controller.GetCommonPhoto)                 //获取指定地点共同记忆
 		PhotoPost.GET("/common/photo/randget", controller.GetRandCommonPhoto)          //获取随机共同记忆
@@ -61,6 +61,14 @@ func RouterInit() *gin.Engine {
 		PhotoPost.PUT("/group/post", controller.PostGroupPhoto)                        //发布多人记忆
 		//PhotoPost.GET("/personal/getpersonalalbum", controller.GetPersonalAlbum)      //获取个人相册
 		//PhotoPost.GET("/group/get", controller.GetGroupPhoto)                //获取多人记忆
+	}
+
+	//工具
+	ToolGroup := a.Group("api/tool")
+	{
+		ToolGroup.GET("/getqntoken", controller.Get_QNtoken)   //获取qntoken
+		ToolGroup.POST("/getrandstring", controller.GetRandString) //获取指定位数的随机字符
+
 	}
 
 	//用于测试的路由
