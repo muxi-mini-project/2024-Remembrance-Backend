@@ -347,8 +347,9 @@ func GetRandCommonPhoto(c *gin.Context) {
 // @Router			/api/photo/common/comment/getsearch [get]
 func GetSearch(c *gin.Context) {
 	var mes Message
+	c.BindJSON(&mes)
 	var search []models.Search
-	common.DB.Limit(20).Table("searches").Where("User_id = ?", mes.UserId).Find(&search)
+	common.DB.Limit(20).Table("searches").Where("User_id = ?", mes.UserId).Order("id DESC").Find(&search)
 	response.OkData(c, search)
 }
 

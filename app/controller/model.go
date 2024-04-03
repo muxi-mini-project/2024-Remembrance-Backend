@@ -87,11 +87,11 @@ func (mes Message) GetUser_Group() models.User_Group {
 }
 
 func (mes Message) GetSearch() models.Search {
-	Search := models.Search{
+	search := models.Search{
 		User_id: mes.UserId,
 		Text:    mes.Location,
 	}
-	return Search
+	return search
 }
 
 // func (mes Message)GetGroupCode() models.GroupCode{
