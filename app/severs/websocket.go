@@ -8,7 +8,6 @@ import (
 	"remembrance/app/controller"
 	"remembrance/app/models"
 	"sync"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -25,13 +24,16 @@ var upgrader = websocket.Upgrader{
 
 // 定义全局变量以存储当前所有已连接的客户端
 var (
-	clients            = make(map[*websocket.Conn]bool) // 存储所有客户端连接
-	clientsLock        sync.Mutex                       // 用于 clients 的互斥锁，防止并发冲突
-	messageHistoryLock sync.Mutex                       // 用于 messageHistory 的互斥锁
+	clients            = make(map[string][]*websocket.Conn) // 存储所有客户端连接，按照 groupid 分组
+	clientsLock        sync.Mutex                           // 用于 clients 的互斥锁，防止并发冲突
+	messageHistoryLock sync.Mutex                           // 用于 messageHistory 的互斥锁
 )
 
-// handleConnections 处理 WebSocket 连接的函数
+// HandleConnections 处理 WebSocket 连接的函数
 func HandleConnections(c *gin.Context) {
+	// 从 URL 参数中获取 groupid
+	groupID := c.Query("groupid")
+
 	// 升级 HTTP 连接到 WebSocket 连接
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
@@ -40,72 +42,85 @@ func HandleConnections(c *gin.Context) {
 	}
 	defer conn.Close() // 确保在函数返回前关闭连接
 
-	// 将新的连接添加到 clients 集合中
+	// 将新的连接添加到相应的组中
 	clientsLock.Lock()
-	clients[conn] = true
+	clients[groupID] = append(clients[groupID], conn)
 	clientsLock.Unlock()
 
-	//读取历史消息
-	var mes controller.Message
-	c.BindJSON(&mes)
-	var messageHistory []models.GroupPhoto
-	common.DB.Limit(20).Table("groupphotos").Where("Group_id = ?", mes.GroupId).Find(&messageHistory)
-	// 发送历史消息给新连接的客户端
+	// 读取历史消息，发送给新连接
+	sendMessageHistory(groupID, conn)
+
+	// 循环读取消息
+	for {
+		var mess controller.Message
+		err := conn.ReadJSON(&mess)
+		if err != nil {
+			// 读取出错，断开连接并从群组中移除
+			clientsLock.Lock()
+			removeConnection(groupID, conn)
+			clientsLock.Unlock()
+			break
+		}
+
+		// 处理消息
+		photo := mess.GetGroupPhoto()
+		messageHistoryLock.Lock()
+		common.DB.Create(&photo)
+		messageHistoryLock.Unlock()
+
+		// 广播消息给同一群组内的所有连接
+		broadcastToGroup(groupID, photo)
+	}
+}
+
+// sendMessageHistory 发送历史消息给连接
+func sendMessageHistory(groupID string, conn *websocket.Conn) {
 	messageHistoryLock.Lock()
+	defer messageHistoryLock.Unlock()
+
+	var messageHistory []models.GroupPhoto
+	common.DB.Limit(20).Table("group_photos").Where("Group_id = ?", groupID).Find(&messageHistory)
+
 	for _, msg := range messageHistory {
-		// 序列化每条消息为JSON
 		jsonMsg, err := json.Marshal(msg)
 		if err != nil {
 			fmt.Println("Error marshaling message:", err)
 			break
 		}
-		// 发送序列化后的消息
+
 		if err := conn.WriteMessage(websocket.TextMessage, jsonMsg); err != nil {
 			fmt.Println("Error sending message:", err)
 			break
 		}
 	}
-
-	messageHistoryLock.Unlock()
-
-	// 循环读取新的消息
-	for {
-		var mess controller.Message
-		c.BindJSON(&mess)
-		if err != nil {
-			break // 如果读取出错，退出循环
-		}
-		photo := mess.GetGroupPhoto()
-		// 将新消息添加到历史记录并广播给所有客户端
-		messageHistoryLock.Lock()
-		common.DB.Create(&photo)
-		messageHistoryLock.Unlock()
-
-		broadcast(photo) // 广播消息
-		time.Sleep(200 * time.Millisecond)
-	}
-
-	// 从 clients 集合中移除断开连接的客户端
-	clientsLock.Lock()
-	delete(clients, conn)
-	clientsLock.Unlock()
 }
 
-// broadcast 将消息广播给所有已连接的客户端
-func broadcast(photo models.GroupPhoto) {
+// broadcastToGroup 广播消息给同一群组内的所有连接
+func broadcastToGroup(groupID string, photo models.GroupPhoto) {
 	clientsLock.Lock()
 	defer clientsLock.Unlock()
-	//转化为json
+
 	jsonMessage, err := json.Marshal(photo)
 	if err != nil {
 		fmt.Println("Error marshaling GroupPhoto:", err)
 		return
 	}
 
-	for client := range clients {
+	for _, client := range clients[groupID] {
 		if err := client.WriteMessage(websocket.TextMessage, jsonMessage); err != nil {
-			client.Close()          // 发送消息失败时关闭连接
-			delete(clients, client) // 从客户端列表中移除
+			client.Close() // 发送消息失败时关闭连接
+			removeConnection(groupID, client)
+		}
+	}
+}
+
+// removeConnection 从群组中移除连接
+func removeConnection(groupID string, conn *websocket.Conn) {
+	// 查找并移除连接
+	for i, c := range clients[groupID] {
+		if c == conn {
+			clients[groupID] = append(clients[groupID][:i], clients[groupID][i+1:]...)
+			break
 		}
 	}
 }

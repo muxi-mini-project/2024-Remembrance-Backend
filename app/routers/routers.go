@@ -58,15 +58,15 @@ func RouterInit() *gin.Engine {
 		PhotoPost.POST("/common/comment/getsearch", controller.GetSearch)              //获取搜索历史
 		PhotoPost.PUT("/common/comment/post", controller.PostComment)                  //发布共同评论
 		PhotoPost.POST("/common/comment/get", controller.GetCommonComment)             //获取共同评论
-		PhotoPost.PUT("/group/post", controller.PostGroupPhoto)                        //发布多人记忆
 		//PhotoPost.GET("/personal/getpersonalalbum", controller.GetPersonalAlbum)      //获取个人相册
-		//PhotoPost.GET("/group/get", controller.GetGroupPhoto)                //获取多人记忆
+		PhotoPost.GET("/group/get", controller.GetGroupPhoto)   //获取多人记忆
+		PhotoPost.PUT("/group/post", controller.PostGroupPhoto) //发布多人记忆
 	}
 
 	//工具
 	ToolGroup := a.Group("api/tool")
 	{
-		ToolGroup.GET("/getqntoken", controller.Get_QNtoken)   //获取qntoken
+		ToolGroup.GET("/getqntoken", controller.Get_QNtoken)       //获取qntoken
 		ToolGroup.POST("/getrandstring", controller.GetRandString) //获取指定位数的随机字符
 
 	}

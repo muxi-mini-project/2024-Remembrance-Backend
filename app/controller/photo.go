@@ -183,6 +183,45 @@ func DeletePersonalPhoto(c *gin.Context) {
 	response.Ok(c)
 }
 
+// @Summary		发布多人记忆
+// @Description	需要 UserId groupid 图片url text
+// @Tags			controller
+// @Accept			json
+// @Produce		json
+// @Param			cloudurl	body		Message					true	"cloudurl"
+// @Param			text		body		Message					true	"text"
+// @Param			userid		body		Message					true	"userid"
+// @Param			groupid		body		Message					true	"groupid"
+// @Success		200			{object}	response.OkMesData		`{"message":"成功"}`
+// @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
+// @Router			/api/photo/group/post [put]
+func PostGroupPhoto(c *gin.Context) {
+	var mes Message
+	c.BindJSON(&mes)
+	//获取图片信息
+	photo := mes.GetGroupPhoto()
+	//入库
+	common.DB.Create(&photo)
+	//获取用户信息
+	err, user := mes.GetUser()
+	if err != nil {
+		response.FailMsgData(c, "用户信息出错", err)
+		return
+	}
+	//印记数加一
+	common.DB.Table("users").Where("ID = ?", mes.UserId).Update("Stamp_Num", user.StampNum+1).Update("Post_Num", user.PostGroupNum+1)
+	response.Ok(c)
+}
+
+// 获取多人记
+func GetGroupPhoto(c *gin.Context) {
+	var mes Message
+	c.BindJSON(&mes)
+	var messageHistory []models.GroupPhoto
+	common.DB.Limit(20).Table("group_photos").Where("Group_id = ?", mes.GroupId).Find(&messageHistory)
+	response.OkData(c, messageHistory)
+}
+
 // @Summary		发布共同记忆
 // @Description	需要 UserId 图片url text location
 // @Tags			controller
@@ -237,46 +276,6 @@ func DeleteCommonPhoto(c *gin.Context) {
 	common.DB.Table("common_photos").Where("Id = ?", mes.PhotoId).Delete(&ph)
 	response.Ok(c)
 }
-
-// @Summary		发布多人记忆
-// @Description	需要 UserId groupid 图片url text
-// @Tags			controller
-// @Accept			json
-// @Produce		json
-// @Param			cloudurl	body		Message					true	"cloudurl"
-// @Param			text		body		Message					true	"text"
-// @Param			userid		body		Message					true	"userid"
-// @Param			groupid		body		Message					true	"groupid"
-// @Success		200			{object}	response.OkMesData		`{"message":"成功"}`
-// @Failure		400			{object}	response.FailMesData	`{"message":"Failure"}`
-// @Router			/api/photo/group/post [put]
-func PostGroupPhoto(c *gin.Context) {
-	var mes Message
-	c.BindJSON(&mes)
-	//获取图片信息
-	photo := mes.GetGroupPhoto()
-	//入库
-	common.DB.Create(&photo)
-	//获取用户信息
-	err, user := mes.GetUser()
-	if err != nil {
-		response.FailMsgData(c, "用户信息出错", err)
-		return
-	}
-	//印记数加一
-	common.DB.Table("users").Where("ID = ?", mes.UserId).Update("Stamp_Num", user.StampNum+1).Update("Post_Num", user.PostGroupNum+1)
-	response.Ok(c)
-}
-
-// 获取多人记忆(websocket)
-// func GetGroupPhoto(c *gin.Context) {
-// 	var mes Message
-// 	c.BindJSON(&mes)
-// 	var photos models.GroupPhoto
-// 	common.DB.Limit(7).Table("groupphotos").Where("Group_id = ?", mes.GroupId).Find(&photos)
-// 	response.OkData(c, photos)
-
-// }
 
 // @Summary		获取指定地点的共同记忆
 // @Description	需要 userid(用于记录搜索历史) location 传回的信息中包含url photoid text
