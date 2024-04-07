@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	"fmt"
+	"net/http"
 	"remembrance/app/common"
 	"remembrance/app/common/tool"
 	"remembrance/app/models"
@@ -251,6 +252,11 @@ func GetGroup(c *gin.Context) {
 		common.DB.Limit(20).Table("groups").Where("id = ?", group.Group_id).Find(&info)
 		groups = append(groups, info)
 	}
-
-	response.OkData(c, groups)
+	obj := gin.H{
+		"code":         200,
+		"message":      "获取成功",
+		"group":        groups,
+		"relationship": gp,
+	}
+	c.JSON(http.StatusOK, obj)
 }
