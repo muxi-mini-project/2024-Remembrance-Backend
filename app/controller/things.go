@@ -9,7 +9,7 @@ import (
 
 func GetRandString(c *gin.Context) {
 	var mes Message
-	c.BindJSON(mes)
+	c.BindJSON(&mes)
 	str := tool.Randnum(mes.Number)
 	response.OkData(c, str)
 }

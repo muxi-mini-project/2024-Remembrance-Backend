@@ -4,12 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"remembrance/app/common"
+	"remembrance/app/common/tool"
 	"remembrance/app/models"
 	"remembrance/app/response"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-redis/redis"
 	"gorm.io/gorm"
 )
 
@@ -104,9 +103,6 @@ func CreateGroup(c *gin.Context) {
 	if err := common.DB.Table("groups").Where("name = ?", mes.GroupName).First(&g).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			// 没有找到匹配的记录
-			//创建群
-			common.DB.Create(&group)
-			//response.OkMsg(c, "群已创建")
 		} else {
 			// 其他查询错误
 			fmt.Printf("查询错误: %s\n", err.Error())
@@ -115,20 +111,25 @@ func CreateGroup(c *gin.Context) {
 		}
 	} else {
 		// 找到匹配的记录
-		//fmt.Printf("找到用户记录: %+v\n", user)
 		response.FailMsg(c, "该群名已使用")
 		return
 	}
 
+	code := tool.Randnumber()
+	group.Code = code
+	common.DB.Create(&group)
+	common.DB.Table("groups").Where("Name = ?", group.Name).First(&group)
 	//建立关系
 	CreatUser_Group(mes.UserId, group.ID, "creater")
-	//记录验证码
-	err := common.RDB.Set("verification"+string(rune(group.ID)), group.Code, 10*time.Minute).Err()
-	if err != nil {
-		panic(err)
-	}
-	common.DB.Table("")
-	response.Ok(c)
+
+	response.OkData(c, group)
+	// //记录验证码
+	// err := common.RDB.Set("verification"+string(rune(group.ID)), group.Code, 10*time.Minute).Err()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// common.DB.Table("")
+
 }
 
 // @Summary		加入群
@@ -146,20 +147,30 @@ func JoinGroup(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
 	group := mes.GetGroup()
-	//验证
-	val, err := common.RDB.Get("verification" + string(rune(group.ID))).Result()
-	if err == redis.Nil {
-		fmt.Println("验证码不存在或已过期")
-		response.FailMsg(c, "验证码不存在或已过期")
-	} else if err != nil {
-		panic(err)
-	} else if val == mes.GroupCode {
-		fmt.Println("验证码正确")
-		response.OkMsg(c, "验证码正确")
-	} else {
-		fmt.Println("验证码错误")
-		response.FailMsg(c, "验证码错误")
+	var g models.Group
+	common.DB.Table("groups").Where("Name = ?", group.Name).First(&g)
+	if group.Code != g.Code {
+		response.FailMsg(c, "code错误")
+		return
 	}
+
+	CreatUser_Group(mes.UserId, g.ID, "member")
+
+	response.OkData(c, g)
+	// //验证
+	// val, err := common.RDB.Get("verification" + string(rune(group.ID))).Result()
+	// if err == redis.Nil {
+	// 	fmt.Println("验证码不存在或已过期")
+	// 	response.FailMsg(c, "验证码不存在或已过期")
+	// } else if err != nil {
+	// 	panic(err)
+	// } else if val == mes.GroupCode {
+	// 	fmt.Println("验证码正确")
+	// 	response.OkMsg(c, "验证码正确")
+	// } else {
+	// 	fmt.Println("验证码错误")
+	// 	response.FailMsg(c, "验证码错误")
+	// }
 
 }
 

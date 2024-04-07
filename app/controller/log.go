@@ -89,7 +89,7 @@ func Get_code(c *gin.Context) {
 	case "register":
 		{ //检查账户是否存在
 			var user models.User
-			if err := common.DB.Table("users").Where("Emial = ?", mes.Email).First(&user).Error; err != nil {
+			if err := common.DB.Table("users").Where("Email = ?", mes.Email).First(&user).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					// 没有找到匹配的记录
 					//向目标邮箱发送验证码
@@ -177,7 +177,7 @@ func Register(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	if err := common.DB.Table("users").Where("Emial = ?", user.Email).First(&u).Error; err != nil {
+	if err := common.DB.Table("users").Where("Email = ?", user.Email).First(&u).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			// 没有找到匹配的记录
 			//进行注册操作

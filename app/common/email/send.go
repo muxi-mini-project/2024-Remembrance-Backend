@@ -62,7 +62,7 @@ func (mes Message) CheckCode() (int, string) {
 		//fmt.Println("验证码不存在或已过期")
 		return 400, "验证码不存在或已过期"
 	} else if err != nil {
-		panic(err)
+		fmt.Println(err)
 		return 400, "错误"
 	} else if val == mes.Code {
 		//fmt.Println("验证码正确")

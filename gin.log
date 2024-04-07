@@ -1,0 +1,220 @@
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /api/get_code             --> remembrance/app/controller.Get_code (3 handlers)
+[GIN-debug] POST   /api/check_code           --> remembrance/app/controller.Check_Code (3 handlers)
+[GIN-debug] PUT    /api/register             --> remembrance/app/controller.Register (3 handlers)
+[GIN-debug] POST   /api                      --> remembrance/app/controller.Login (3 handlers)
+[GIN-debug] POST   /api/user/getinfo         --> remembrance/app/controller.GetUserInfo (3 handlers)
+[GIN-debug] POST   /api/user/changepassword  --> remembrance/app/controller.ChangePassword (3 handlers)
+[GIN-debug] POST   /api/user/changename      --> remembrance/app/controller.Changename (3 handlers)
+[GIN-debug] POST   /api/user/group/get       --> remembrance/app/controller.GetGroup (3 handlers)
+[GIN-debug] PUT    /api/user/group/creat     --> remembrance/app/controller.CreateGroup (3 handlers)
+[GIN-debug] POST   /api/user/group/join      --> remembrance/app/controller.JoinGroup (3 handlers)
+[GIN-debug] POST   /api/user/group/out       --> remembrance/app/controller.OutGroup (3 handlers)
+[GIN-debug] POST   /api/user/group/delete    --> remembrance/app/controller.OutGroup (3 handlers)
+[GIN-debug] GET    /api/user/group/line      --> remembrance/app/severs.HandleConnections (3 handlers)
+[GIN-debug] GET    /api/photo/gettoken       --> remembrance/app/controller.Get_QNtoken (3 handlers)
+[GIN-debug] PUT    /api/photo/personal/createalbum --> remembrance/app/controller.CreatePersonalAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/getpersonalalbum --> remembrance/app/controller.GetPersonalAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/deletealbum --> remembrance/app/controller.DeletePersonalAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/getfromalbum --> remembrance/app/controller.GetPersonalPhotoFromAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/get   --> remembrance/app/controller.GetPersonalPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/personal/numget --> remembrance/app/controller.GetNumPersonalPhoto (3 handlers)
+[GIN-debug] PUT    /api/photo/personal/post  --> remembrance/app/controller.PostPersonalPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/personal/delete --> remembrance/app/controller.DeletePersonalPhoto (3 handlers)
+[GIN-debug] PUT    /api/photo/common/photo/post --> remembrance/app/controller.PostCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/photo/delete --> remembrance/app/controller.DeleteCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/photo/getself --> remembrance/app/controller.GetSelfCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/photo/get --> remembrance/app/controller.GetCommonPhoto (3 handlers)
+[GIN-debug] GET    /api/photo/common/photo/randget --> remembrance/app/controller.GetRandCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/comment/getsearch --> remembrance/app/controller.GetSearch (3 handlers)
+[GIN-debug] PUT    /api/photo/common/comment/post --> remembrance/app/controller.PostComment (3 handlers)
+[GIN-debug] POST   /api/photo/common/comment/get --> remembrance/app/controller.GetCommonComment (3 handlers)
+[GIN-debug] POST   /api/photo/group/get      --> remembrance/app/controller.GetGroupPhoto (3 handlers)
+[GIN-debug] PUT    /api/photo/group/post     --> remembrance/app/controller.PostGroupPhoto (3 handlers)
+[GIN-debug] GET    /api/tool/getqntoken      --> remembrance/app/controller.Get_QNtoken (3 handlers)
+[GIN-debug] POST   /api/tool/getrandstring   --> remembrance/app/controller.GetRandString (3 handlers)
+[GIN-debug] GET    /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] POST   /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] PUT    /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] PATCH  /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] HEAD   /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] OPTIONS /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] DELETE /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] CONNECT /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] TRACE  /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8088
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /api/get_code             --> remembrance/app/controller.Get_code (3 handlers)
+[GIN-debug] POST   /api/check_code           --> remembrance/app/controller.Check_Code (3 handlers)
+[GIN-debug] PUT    /api/register             --> remembrance/app/controller.Register (3 handlers)
+[GIN-debug] POST   /api                      --> remembrance/app/controller.Login (3 handlers)
+[GIN-debug] POST   /api/user/getinfo         --> remembrance/app/controller.GetUserInfo (3 handlers)
+[GIN-debug] POST   /api/user/changepassword  --> remembrance/app/controller.ChangePassword (3 handlers)
+[GIN-debug] POST   /api/user/changename      --> remembrance/app/controller.Changename (3 handlers)
+[GIN-debug] POST   /api/user/group/get       --> remembrance/app/controller.GetGroup (3 handlers)
+[GIN-debug] PUT    /api/user/group/creat     --> remembrance/app/controller.CreateGroup (3 handlers)
+[GIN-debug] POST   /api/user/group/join      --> remembrance/app/controller.JoinGroup (3 handlers)
+[GIN-debug] POST   /api/user/group/out       --> remembrance/app/controller.OutGroup (3 handlers)
+[GIN-debug] POST   /api/user/group/delete    --> remembrance/app/controller.OutGroup (3 handlers)
+[GIN-debug] GET    /api/user/group/line      --> remembrance/app/severs.HandleConnections (3 handlers)
+[GIN-debug] GET    /api/photo/gettoken       --> remembrance/app/controller.Get_QNtoken (3 handlers)
+[GIN-debug] PUT    /api/photo/personal/createalbum --> remembrance/app/controller.CreatePersonalAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/getpersonalalbum --> remembrance/app/controller.GetPersonalAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/deletealbum --> remembrance/app/controller.DeletePersonalAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/getfromalbum --> remembrance/app/controller.GetPersonalPhotoFromAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/get   --> remembrance/app/controller.GetPersonalPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/personal/numget --> remembrance/app/controller.GetNumPersonalPhoto (3 handlers)
+[GIN-debug] PUT    /api/photo/personal/post  --> remembrance/app/controller.PostPersonalPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/personal/delete --> remembrance/app/controller.DeletePersonalPhoto (3 handlers)
+[GIN-debug] PUT    /api/photo/common/photo/post --> remembrance/app/controller.PostCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/photo/delete --> remembrance/app/controller.DeleteCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/photo/getself --> remembrance/app/controller.GetSelfCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/photo/get --> remembrance/app/controller.GetCommonPhoto (3 handlers)
+[GIN-debug] GET    /api/photo/common/photo/randget --> remembrance/app/controller.GetRandCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/comment/getsearch --> remembrance/app/controller.GetSearch (3 handlers)
+[GIN-debug] PUT    /api/photo/common/comment/post --> remembrance/app/controller.PostComment (3 handlers)
+[GIN-debug] POST   /api/photo/common/comment/get --> remembrance/app/controller.GetCommonComment (3 handlers)
+[GIN-debug] POST   /api/photo/group/get      --> remembrance/app/controller.GetGroupPhoto (3 handlers)
+[GIN-debug] PUT    /api/photo/group/post     --> remembrance/app/controller.PostGroupPhoto (3 handlers)
+[GIN-debug] GET    /api/tool/getqntoken      --> remembrance/app/controller.Get_QNtoken (3 handlers)
+[GIN-debug] POST   /api/tool/getrandstring   --> remembrance/app/controller.GetRandString (3 handlers)
+[GIN-debug] GET    /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] POST   /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] PUT    /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] PATCH  /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] HEAD   /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] OPTIONS /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] DELETE /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] CONNECT /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] TRACE  /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8088
+[GIN] 2024/04/07 - 16:43:24 | 200 |       900.7µs |             ::1 | POST     "/api"
+[GIN] 2024/04/07 - 16:43:24 | 200 |       622.8µs |             ::1 | POST     "/api"
+[GIN] 2024/04/07 - 16:43:25 | 200 |       265.9µs |             ::1 | POST     "/api"
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /api/get_code             --> remembrance/app/controller.Get_code (3 handlers)
+[GIN-debug] POST   /api/check_code           --> remembrance/app/controller.Check_Code (3 handlers)
+[GIN-debug] PUT    /api/register             --> remembrance/app/controller.Register (3 handlers)
+[GIN-debug] POST   /api                      --> remembrance/app/controller.Login (3 handlers)
+[GIN-debug] POST   /api/user/getinfo         --> remembrance/app/controller.GetUserInfo (3 handlers)
+[GIN-debug] POST   /api/user/changepassword  --> remembrance/app/controller.ChangePassword (3 handlers)
+[GIN-debug] POST   /api/user/changename      --> remembrance/app/controller.Changename (3 handlers)
+[GIN-debug] POST   /api/user/group/get       --> remembrance/app/controller.GetGroup (3 handlers)
+[GIN-debug] PUT    /api/user/group/creat     --> remembrance/app/controller.CreateGroup (3 handlers)
+[GIN-debug] POST   /api/user/group/join      --> remembrance/app/controller.JoinGroup (3 handlers)
+[GIN-debug] POST   /api/user/group/out       --> remembrance/app/controller.OutGroup (3 handlers)
+[GIN-debug] POST   /api/user/group/delete    --> remembrance/app/controller.OutGroup (3 handlers)
+[GIN-debug] GET    /api/user/group/line      --> remembrance/app/severs.HandleConnections (3 handlers)
+[GIN-debug] GET    /api/photo/gettoken       --> remembrance/app/controller.Get_QNtoken (3 handlers)
+[GIN-debug] PUT    /api/photo/personal/createalbum --> remembrance/app/controller.CreatePersonalAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/getpersonalalbum --> remembrance/app/controller.GetPersonalAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/deletealbum --> remembrance/app/controller.DeletePersonalAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/getfromalbum --> remembrance/app/controller.GetPersonalPhotoFromAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/get   --> remembrance/app/controller.GetPersonalPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/personal/numget --> remembrance/app/controller.GetNumPersonalPhoto (3 handlers)
+[GIN-debug] PUT    /api/photo/personal/post  --> remembrance/app/controller.PostPersonalPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/personal/delete --> remembrance/app/controller.DeletePersonalPhoto (3 handlers)
+[GIN-debug] PUT    /api/photo/common/photo/post --> remembrance/app/controller.PostCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/photo/delete --> remembrance/app/controller.DeleteCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/photo/getself --> remembrance/app/controller.GetSelfCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/photo/get --> remembrance/app/controller.GetCommonPhoto (3 handlers)
+[GIN-debug] GET    /api/photo/common/photo/randget --> remembrance/app/controller.GetRandCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/comment/getsearch --> remembrance/app/controller.GetSearch (3 handlers)
+[GIN-debug] PUT    /api/photo/common/comment/post --> remembrance/app/controller.PostComment (3 handlers)
+[GIN-debug] POST   /api/photo/common/comment/get --> remembrance/app/controller.GetCommonComment (3 handlers)
+[GIN-debug] POST   /api/photo/group/get      --> remembrance/app/controller.GetGroupPhoto (3 handlers)
+[GIN-debug] PUT    /api/photo/group/post     --> remembrance/app/controller.PostGroupPhoto (3 handlers)
+[GIN-debug] GET    /api/tool/getqntoken      --> remembrance/app/controller.Get_QNtoken (3 handlers)
+[GIN-debug] POST   /api/tool/getrandstring   --> remembrance/app/controller.GetRandString (3 handlers)
+[GIN-debug] GET    /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] POST   /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] PUT    /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] PATCH  /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] HEAD   /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] OPTIONS /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] DELETE /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] CONNECT /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] TRACE  /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8088
+[GIN] 2024/04/07 - 16:48:31 | 200 |       849.9µs |             ::1 | POST     "/api"
+[GIN] 2024/04/07 - 16:48:32 | 200 |      1.0571ms |             ::1 | POST     "/api"
+[GIN] 2024/04/07 - 16:48:33 | 200 |       466.5µs |             ::1 | POST     "/api"
+[GIN] 2024/04/07 - 16:49:14 | 200 |       714.1µs |             ::1 | POST     "/api"
+[GIN] 2024/04/07 - 16:49:24 | 200 |         570µs |             ::1 | POST     "/api"
+[GIN] 2024/04/07 - 16:49:24 | 200 |       982.3µs |             ::1 | POST     "/api"
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /api/get_code             --> remembrance/app/controller.Get_code (3 handlers)
+[GIN-debug] POST   /api/check_code           --> remembrance/app/controller.Check_Code (3 handlers)
+[GIN-debug] PUT    /api/register             --> remembrance/app/controller.Register (3 handlers)
+[GIN-debug] POST   /api                      --> remembrance/app/controller.Login (3 handlers)
+[GIN-debug] POST   /api/user/getinfo         --> remembrance/app/controller.GetUserInfo (3 handlers)
+[GIN-debug] POST   /api/user/changepassword  --> remembrance/app/controller.ChangePassword (3 handlers)
+[GIN-debug] POST   /api/user/changename      --> remembrance/app/controller.Changename (3 handlers)
+[GIN-debug] POST   /api/user/group/get       --> remembrance/app/controller.GetGroup (3 handlers)
+[GIN-debug] PUT    /api/user/group/creat     --> remembrance/app/controller.CreateGroup (3 handlers)
+[GIN-debug] POST   /api/user/group/join      --> remembrance/app/controller.JoinGroup (3 handlers)
+[GIN-debug] POST   /api/user/group/out       --> remembrance/app/controller.OutGroup (3 handlers)
+[GIN-debug] POST   /api/user/group/delete    --> remembrance/app/controller.OutGroup (3 handlers)
+[GIN-debug] GET    /api/user/group/line      --> remembrance/app/severs.HandleConnections (3 handlers)
+[GIN-debug] GET    /api/photo/gettoken       --> remembrance/app/controller.Get_QNtoken (3 handlers)
+[GIN-debug] PUT    /api/photo/personal/createalbum --> remembrance/app/controller.CreatePersonalAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/getpersonalalbum --> remembrance/app/controller.GetPersonalAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/deletealbum --> remembrance/app/controller.DeletePersonalAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/getfromalbum --> remembrance/app/controller.GetPersonalPhotoFromAlbum (3 handlers)
+[GIN-debug] POST   /api/photo/personal/get   --> remembrance/app/controller.GetPersonalPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/personal/numget --> remembrance/app/controller.GetNumPersonalPhoto (3 handlers)
+[GIN-debug] PUT    /api/photo/personal/post  --> remembrance/app/controller.PostPersonalPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/personal/delete --> remembrance/app/controller.DeletePersonalPhoto (3 handlers)
+[GIN-debug] PUT    /api/photo/common/photo/post --> remembrance/app/controller.PostCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/photo/delete --> remembrance/app/controller.DeleteCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/photo/getself --> remembrance/app/controller.GetSelfCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/photo/get --> remembrance/app/controller.GetCommonPhoto (3 handlers)
+[GIN-debug] GET    /api/photo/common/photo/randget --> remembrance/app/controller.GetRandCommonPhoto (3 handlers)
+[GIN-debug] POST   /api/photo/common/comment/getsearch --> remembrance/app/controller.GetSearch (3 handlers)
+[GIN-debug] PUT    /api/photo/common/comment/post --> remembrance/app/controller.PostComment (3 handlers)
+[GIN-debug] POST   /api/photo/common/comment/get --> remembrance/app/controller.GetCommonComment (3 handlers)
+[GIN-debug] POST   /api/photo/group/get      --> remembrance/app/controller.GetGroupPhoto (3 handlers)
+[GIN-debug] PUT    /api/photo/group/post     --> remembrance/app/controller.PostGroupPhoto (3 handlers)
+[GIN-debug] GET    /api/tool/getqntoken      --> remembrance/app/controller.Get_QNtoken (3 handlers)
+[GIN-debug] POST   /api/tool/getrandstring   --> remembrance/app/controller.GetRandString (3 handlers)
+[GIN-debug] GET    /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] POST   /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] PUT    /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] PATCH  /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] HEAD   /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] OPTIONS /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] DELETE /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] CONNECT /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] TRACE  /api/test                 --> remembrance/app/controller.Test (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8088
+[GIN] 2024/04/07 - 16:50:19 | 200 |       5.636ms |             ::1 | POST     "/api"
+[GIN] 2024/04/07 - 16:50:19 | 200 |      1.2181ms |             ::1 | POST     "/api"
+[GIN] 2024/04/07 - 16:50:20 | 200 |       418.8µs |             ::1 | POST     "/api"

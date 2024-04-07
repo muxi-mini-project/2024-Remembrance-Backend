@@ -2,12 +2,15 @@ package routers
 
 import (
 	"remembrance/app/controller"
+	"remembrance/app/logger"
 	"remembrance/app/severs"
 
 	"github.com/gin-gonic/gin"
 )
 
 func RouterInit() *gin.Engine {
+	logger.Initlogger()
+
 	a := gin.Default()
 	//登录，注册
 	LoginGroup := a.Group("/api")
@@ -29,7 +32,7 @@ func RouterInit() *gin.Engine {
 		UserGroup.POST("/group/join", controller.JoinGroup)          //加入群
 		UserGroup.POST("/group/out", controller.OutGroup)            //退出或踢出群
 		UserGroup.POST("/group/delete", controller.OutGroup)         //退出或踢出群
-		UserGroup.POST("/group/line", severs.HandleConnections)      //websocket
+		UserGroup.GET("/group/line", severs.HandleConnections)       //websocket
 		//UserGroup.POST("/group/out", controller.OutGroup)            //踢出群
 		//UserGroup.GET("/getinfo", controller.GetUserInfo)            //获取个人信息
 		//UserGroup.GET("/group/get", controller.GetGroup)             //获取群
