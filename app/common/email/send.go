@@ -18,7 +18,7 @@ type Message struct {
 }
 
 // 发送验证码
-func SendCode(to string, way string) {
+func SendCode(to string, way string) error {
 	//生成验证码
 	code := tool.Randnum(6)
 	fmt.Println(code)
@@ -36,6 +36,7 @@ func SendCode(to string, way string) {
 	auth := smtp.PlainAuth("", common.CONFIG.Email.From, common.CONFIG.Email.From_code, common.CONFIG.Email.Qqsmtp)
 	err := smtp.SendMail(common.CONFIG.Email.Qqsmtp+":"+common.CONFIG.Email.Qqport, auth, common.CONFIG.Email.From, []string{to}, []byte(message))
 	if err != nil {
+		return err
 		// 处理发送邮件时的错误
 		panic(err)
 	}
@@ -50,9 +51,10 @@ func SendCode(to string, way string) {
 		err = common.RDB.Set("verification"+to+way, code, 10*time.Minute).Err() // 验证码有效期为10分钟
 	}
 	if err != nil {
+		return err
 		panic(err)
 	}
-	return
+	return nil
 }
 
 // 检查验证码

@@ -47,7 +47,7 @@ func Login(c *gin.Context) {
 			return
 		}
 	}
-	//获取token
+	//生成token
 	token, err := tube.CreateToken(user.ID)
 	if err != nil {
 		response.FailMsg(c, "生成 token 失败")
@@ -93,17 +93,21 @@ func Get_code(c *gin.Context) {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					// 没有找到匹配的记录
 					//向目标邮箱发送验证码
-					email.SendCode(mes.Email, mes.Type)
+					err := email.SendCode(mes.Email, mes.Type)
+					if err != nil {
+						response.FailMsgData(c, "验证码发送失败", err)
+						return
+					}
 					response.OkMsg(c, "验证码已发送")
 					return
 				} else {
 					// 其他查询错误
 					fmt.Printf("查询错误: %s\n", err.Error())
+					response.FailMsg(c, "未知错误")
 					return
 				}
 			} else {
 				// 找到匹配的记录，可以使用 user 变量
-				//fmt.Printf("找到用户记录: %+v\n", user)
 				response.FailMsg(c, "该邮箱已存在")
 				return
 			}
@@ -119,12 +123,17 @@ func Get_code(c *gin.Context) {
 				} else {
 					// 其他查询错误
 					fmt.Printf("查询错误: %s\n", err.Error())
+					response.FailMsg(c, "未知错误")
 					return
 				}
 			} else {
 				// 找到匹配的记录，可以使用 user 变量
 				//向目标邮箱发送验证码
-				email.SendCode(mes.Email, mes.Type)
+				err := email.SendCode(mes.Email, mes.Type)
+				if err != nil {
+					response.FailMsgData(c, "验证码发送失败", err)
+					return
+				}
 				response.OkMsg(c, "验证码已发送")
 				return
 			}
@@ -195,6 +204,7 @@ func Register(c *gin.Context) {
 		} else {
 			// 其他查询错误
 			fmt.Printf("查询错误: %s\n", err.Error())
+			response.FailMsg(c, "未知错误")
 			return
 		}
 	} else {
