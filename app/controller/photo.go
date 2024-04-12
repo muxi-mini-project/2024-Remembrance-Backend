@@ -352,6 +352,23 @@ func GetSearch(c *gin.Context) {
 	response.OkData(c, search)
 }
 
+// @Summary		清空搜素历史
+// @Description	需要 userid 该删除为永久删除
+// @Tags			controller
+// @Accept			json
+// @Produce		json
+// @Param			userid	body		string					true	"location"
+// @Success		200		{object}	response.OkMesData		`{"message":"清空成功"}`
+// @Failure		400		{object}	response.FailMesData	`{"message":"Failure"}`
+// @Router			/api/photo/common/comment/getsearch [get]
+func DeleteSearch(c *gin.Context) {
+	var mes Message
+	c.BindJSON(&mes)
+	var search []models.Search
+	common.DB.Unscoped().Where("User_id = ?", mes.UserId).Delete(&search)
+	response.OkData(c, search)
+}
+
 // @Summary		发布共同评论
 // @Description	需要 UserId photoid text
 // @Tags			controller

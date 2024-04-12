@@ -8,6 +8,7 @@ import (
 	"remembrance/app/controller"
 	"remembrance/app/models"
 	"sync"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -63,13 +64,17 @@ func HandleConnections(c *gin.Context) {
 		}
 
 		// 处理消息
-		photo := mess.GetGroupPhoto()
-		messageHistoryLock.Lock()
-		common.DB.Create(&photo)
-		messageHistoryLock.Unlock()
+		if mess.Cloudurl != "" {
+			photo := mess.GetGroupPhoto()
+			messageHistoryLock.Lock()
+			common.DB.Create(&photo)
+			messageHistoryLock.Unlock()
 
-		// 广播消息给同一群组内的所有连接
-		broadcastToGroup(groupID, photo)
+			// 广播消息给同一群组内的所有连接
+			broadcastToGroup(groupID, photo)
+		}
+
+		time.Sleep(100 * time.Microsecond)
 	}
 }
 

@@ -53,15 +53,18 @@ func RouterInit() *gin.Engine {
 		PhotoPost.POST("/personal/numget", controller.GetNumPersonalPhoto)             //获得指定数量的最新个人记忆
 		PhotoPost.PUT("/personal/post", controller.PostPersonalPhoto)                  //发布个人记忆
 		PhotoPost.POST("/personal/delete", controller.DeletePersonalPhoto)             //删除个人记忆
-		PhotoPost.PUT("/common/photo/post", controller.PostCommonPhoto)                //发布共同记忆
-		PhotoPost.POST("/common/photo/delete", controller.DeleteCommonPhoto)           //删除共同记忆
-		PhotoPost.POST("/common/photo/getself", controller.GetSelfCommonPhoto)         //获取自己发布的共同记忆
-		PhotoPost.POST("/common/photo/get", controller.GetCommonPhoto)                 //获取指定地点共同记忆
-		PhotoPost.GET("/common/photo/randget", controller.GetRandCommonPhoto)          //获取随机共同记忆
-		PhotoPost.POST("/common/comment/getsearch", controller.GetSearch)              //获取搜索历史
-		PhotoPost.PUT("/common/comment/post", controller.PostComment)                  //发布共同评论
-		PhotoPost.POST("/common/comment/get", controller.GetCommonComment)             //获取共同评论
+
+		PhotoPost.PUT("/common/photo/post", controller.PostCommonPhoto)         //发布共同记忆
+		PhotoPost.POST("/common/photo/delete", controller.DeleteCommonPhoto)    //删除共同记忆
+		PhotoPost.POST("/common/photo/getself", controller.GetSelfCommonPhoto)  //获取自己发布的共同记忆
+		PhotoPost.POST("/common/photo/get", controller.GetCommonPhoto)          //获取指定地点共同记忆
+		PhotoPost.GET("/common/photo/randget", controller.GetRandCommonPhoto)   //获取随机共同记忆
+		PhotoPost.POST("/common/comment/getsearch", controller.GetSearch)       //获取搜索历史
+		PhotoPost.POST("/common/comment/deletesearch", controller.DeleteSearch) //清空搜素历史
+		PhotoPost.PUT("/common/comment/post", controller.PostComment)           //发布共同评论
+		PhotoPost.POST("/common/comment/get", controller.GetCommonComment)      //获取共同评论
 		//PhotoPost.GET("/personal/getpersonalalbum", controller.GetPersonalAlbum)      //获取个人相册
+
 		PhotoPost.POST("/group/get", controller.GetGroupPhoto)  //获取多人记忆
 		PhotoPost.PUT("/group/post", controller.PostGroupPhoto) //发布多人记忆
 	}
