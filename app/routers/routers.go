@@ -33,7 +33,7 @@ func RouterInit() *gin.Engine {
 		UserGroup.PUT("/group/creat", controller.CreateGroup)         //创建群
 		UserGroup.POST("/group/join", controller.JoinGroup)           //加入群
 		UserGroup.POST("/group/out", controller.OutGroup)             //退出或踢出群
-		UserGroup.POST("/group/delete", controller.OutGroup)          //退出或踢出群
+		UserGroup.POST("/group/delete", controller.DeleteGroup)       //解散群
 
 		UserGroup.GET("/group/line", severs.HandleConnections) //websocket
 		//UserGroup.POST("/group/out", controller.OutGroup)            //踢出群

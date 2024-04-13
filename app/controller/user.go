@@ -223,14 +223,18 @@ func OutGroup(c *gin.Context) {
 func DeleteGroup(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
-	group := mes.GetGroup()
-	//获取关系
-	//common.DB.Table("User_Groups").Where("Group_id = ?", mes.GroupId)
+	group := models.Group{}
 	//删除关系
 	var usergroup models.User_Group
-	common.DB.Table("User_Groups").Where("Group_id = ?", mes.GroupId).Delete(&usergroup)
+	if err := common.DB.Table("user_groups").Where("group_id = ?", mes.GroupId).Delete(&usergroup).Error; err != nil {
+		response.FailMsg(c, "删除关系失败")
+		return
+	}
 	//删除群
-	common.DB.Table("groups").Where("id = ?",group.ID).Delete(&group)
+	if err := common.DB.Table("groups").Where("id = ?", mes.GroupId).Delete(&group).Error; err != nil {
+		response.FailMsg(c, "删除群失败")
+		return
+	}
 
 	response.Ok(c)
 }
