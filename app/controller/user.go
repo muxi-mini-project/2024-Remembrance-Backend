@@ -230,7 +230,7 @@ func DeleteGroup(c *gin.Context) {
 	var usergroup models.User_Group
 	common.DB.Table("User_Groups").Where("Group_id = ?", mes.GroupId).Delete(&usergroup)
 	//删除群
-	common.DB.Delete(&group)
+	common.DB.Table("groups").Where("id = ?",group.ID).Delete(&group)
 
 	response.Ok(c)
 }
