@@ -27,6 +27,9 @@ func GetUserInfo(c *gin.Context) {
 	var user, u models.User
 	c.BindJSON(&user)
 	common.DB.Table("users").Where("ID = ?", user.ID).First(&u)
+	if user.ID != u.ID {
+		response.FailMsg(c, "未找到")
+	}
 	response.OkData(c, u)
 }
 
@@ -194,16 +197,16 @@ func OutGroup(c *gin.Context) {
 	usergroup := mes.GetUser_Group()
 	groupphoto := mes.GetGroupPhoto()
 	//删除关系
-	common.DB.Delete(&usergroup)
+	common.DB.Table("user_groups").Where("user_id = ?", usergroup.User_id).Delete(&usergroup)
 	//该群人数减1
-	common.DB.Table("`Groups`").Where("Id = ?", mes.GroupId).First(&group).Update("People_Num", group.PeopleNum-1)
+	common.DB.Table("groups").Where("Id = ?", mes.GroupId).First(&group).Update("People_Num", group.PeopleNum-1)
 	//判断是否保留
 	if mes.IfKeepGroupPhoto {
 		//保留
 		response.Ok(c)
 	} else {
 		//不保留,删掉
-		common.DB.Delete(&groupphoto)
+		common.DB.Table("group_photos").Where("group_id = ? and user_id = ?", groupphoto.Group_id, groupphoto.User_id).Delete(&groupphoto)
 		response.Ok(c)
 	}
 }
@@ -220,13 +223,15 @@ func OutGroup(c *gin.Context) {
 func DeleteGroup(c *gin.Context) {
 	var mes Message
 	c.BindJSON(&mes)
-
 	group := mes.GetGroup()
-	//删除群
-	common.DB.Delete(&group)
+	//获取关系
+	//common.DB.Table("User_Groups").Where("Group_id = ?", mes.GroupId)
 	//删除关系
 	var usergroup models.User_Group
 	common.DB.Table("User_Groups").Where("Group_id = ?", mes.GroupId).Delete(&usergroup)
+	//删除群
+	common.DB.Delete(&group)
+
 	response.Ok(c)
 }
 
@@ -259,4 +264,34 @@ func GetGroup(c *gin.Context) {
 		"relationship": gp,
 	}
 	c.JSON(http.StatusOK, obj)
+}
+
+// 获取群成员
+func GetGroupMember(c *gin.Context) {
+	var mes Message
+	c.BindJSON(mes)
+	var rala []models.User_Group
+	err := common.DB.Limit(20).Table("user_groups").Where("group_id = ?", mes.UserId).Find(&rala).Error
+	if err != nil {
+		response.FailMsg(c, "查询出错")
+	}
+	//获取对应用户信息
+	var u models.User
+	type user struct {
+		id      uint
+		name    string
+		purview string
+	}
+	var us []user
+	for _, usermes := range rala {
+		common.DB.Table("users").Where("Id = ?", usermes.User_id).First(&u)
+		user := user{
+			id:      u.ID,
+			name:    u.Name,
+			purview: usermes.Purview,
+		}
+		us = append(us, user)
+	}
+	response.OkData(c, us)
+
 }

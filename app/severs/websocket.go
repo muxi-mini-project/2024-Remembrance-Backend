@@ -7,6 +7,7 @@ import (
 	"remembrance/app/common"
 	"remembrance/app/controller"
 	"remembrance/app/models"
+	"remembrance/app/response"
 	"sync"
 	"time"
 
@@ -72,6 +73,7 @@ func HandleConnections(c *gin.Context) {
 
 			// 广播消息给同一群组内的所有连接
 			broadcastToGroup(groupID, photo)
+			response.OkMsg(c, "发送成功")
 		}
 
 		time.Sleep(100 * time.Microsecond)

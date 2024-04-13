@@ -203,13 +203,13 @@ func PostGroupPhoto(c *gin.Context) {
 	//入库
 	common.DB.Create(&photo)
 	//获取用户信息
-	err, user := mes.GetUser()
+	err, res, user := mes.GetUser()
 	if err != nil {
-		response.FailMsgData(c, "用户信息出错", err)
+		response.FailMsg(c, res)
 		return
 	}
 	//印记数加一
-	common.DB.Table("users").Where("ID = ?", mes.UserId).Update("Stamp_Num", user.StampNum+1).Update("Post_Num", user.PostGroupNum+1)
+	common.DB.Table("users").Where("ID = ?", mes.UserId).Update("Stamp_Num", user.StampNum+1).Update("Post_Group_Num", user.PostGroupNum+1)
 	response.Ok(c)
 }
 
@@ -294,8 +294,11 @@ func GetCommonPhoto(c *gin.Context) {
 	var photos []models.CommonPhoto
 	common.DB.Limit(20).Table("common_photos").Where("location = ?", mes.Location).Find(&photos)
 	//记录
-	search := mes.GetSearch()
-	common.DB.Create(&search)
+	if mes.UserId != 0 {
+		search := mes.GetSearch()
+		common.DB.Create(&search)
+	}
+
 	response.OkData(c, photos)
 }
 

@@ -52,20 +52,20 @@ func (mes Message) GetGroupPhoto() models.GroupPhoto {
 	return m
 }
 
-func (mes Message) GetUser() (error, models.User) {
+func (mes Message) GetUser() (error,string ,models.User) {
 	var user models.User
 	if err := common.DB.Table("users").Where("id = ?", mes.UserId).First(&user).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			// 没有找到匹配的记录
-			return err, user
+			return err, "该用户不存在",user
 		} else {
 			// 其他查询错误
 			fmt.Printf("查询错误: %s\n", err.Error())
-			return err, user
+			return err,"未知作物", user
 		}
 	} else {
 		// 找到匹配的记录，可以使用 user 变量
-		return nil, user
+		return nil,"" ,user
 	}
 }
 
